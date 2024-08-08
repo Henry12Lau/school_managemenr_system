@@ -1,0 +1,69 @@
+member
+----
+id int
+memberID varchar(10) pk
+memberType int
+name varchar(100)
+contact varchar(20)
+email varchar(100)
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
+
+login
+----
+id int
+type varchar(10)
+loginID varchar(10) fk - member.memberID
+password varchar(50)
+isActive boolean
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
+
+attendance
+----
+id int
+subjectID varchar(10) fk - subject.subjectID
+studentID varchar(20) fk - member.memberID
+name varchar(100)
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
+
+course
+----
+id int
+courseID pk
+courseName varchar(100)
+QF int
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
+
+
+subject
+----
+id int
+subjectID pk
+courseID fk - course.courseID
+subjectName
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
+
+mapping
+----
+id int
+courseID varchar(10) fk - course.courseID
+subjectID varchar(10) fk - subject.subjectID
+year varchar(6)
+created_at datetime
+created_by varchar(20)
+updated_at datetime
+updated_by varchar(20)
