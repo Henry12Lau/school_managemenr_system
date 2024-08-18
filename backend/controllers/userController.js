@@ -1,4 +1,3 @@
-const User = require('../models/User');
 const pool = require('../config/db');
 
 
@@ -7,9 +6,9 @@ exports.login = async (req, res) => {
         const { type, username, password } = req.params;
         var result;
         if (type == "student")
-            result = await pool.query('SELECT * FROM student WHERE username and is_delete = false', [username]);
+            result = await pool.query('SELECT * FROM student WHERE username = $1 and is_deleted = false', [`%${username}%`]);
         else
-            result = await pool.query('SELECT * FROM users WHERE username and is_delete = false', [username]);
+            result = await pool.query('SELECT * FROM staff WHERE username = $1 and is_deleted = false', [`%${username}%`]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'Invalid username or password' });
         }
