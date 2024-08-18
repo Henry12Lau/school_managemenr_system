@@ -1,16 +1,22 @@
-var express = require('express');
-const userRoutes = require('./routes/user');
+const express = require('express');
+const session = require('express-session');
+const authRoutes = require('./routes/authRoutes');
 
-var app = express();
 const port = 3000;
+const app = express();
 app.use(express.json());
+app.use(session({
+  secret: 'DETtHQyF2WCTa4AWT+plvxQiyvydu6O2FJ55cltGfr0=',
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.get('/', function (req, res) {
   res.send('Wellcome to School Management System!');
 });
 
 
-app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
 
 app.listen(port, function () {
   console.log(`Server is running on port ${port}!`);
