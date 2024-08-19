@@ -22,16 +22,25 @@ app.use('/auth', authRoutes);
 
 
 
-app.use('/user', isLoggedIn, userRoutes);
+app.use('/user', isLoggedIn(['admin']), userRoutes);
 
 app.listen(port, function () {
   console.log(`Server is running on port ${port}!`);
 });
 
-function isLoggedIn(req, res, next) {
-  if (req.session.user) {
+function isLoggedIn(requiredPermissions = [])
+{
+  return (req, res, next) => {
+    //FOR Develop
     return next();
-  } else {
-    return res.status(500).json({ message: 'Missing Login session' });
+
+
+    if (!req.session.user) {
+      return res.status(500).json({ message: 'Missing Login session' });
+    }
+    if (requiredPermissions.some(permission => !req.session.user.permissions.includes(permission))) {
+      return res.status(403).json({ message: 'Access Denied' });
+    }
+    return next();
   }
 }
