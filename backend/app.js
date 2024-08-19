@@ -24,7 +24,7 @@ app.use('/auth', authRoutes);
 
 
 app.use('/student', isLoggedIn(['student']), studentRoutes);
-app.use('/staff', isLoggedIn(['admin', 'officer', 'techer']), studentRoutes);
+app.use('/staff', isLoggedIn(['admin', 'officer', 'techer']), staffRoutes);
 app.use('/user', isLoggedIn(['admin']), userRoutes);
 
 app.listen(port, function () {
