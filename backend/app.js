@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const port = 3000;
 const app = express();
@@ -18,6 +19,19 @@ app.get('/', function (req, res) {
 
 app.use('/auth', authRoutes);
 
+
+
+
+app.use('/user', isLoggedIn, userRoutes);
+
 app.listen(port, function () {
   console.log(`Server is running on port ${port}!`);
 });
+
+function isLoggedIn(req, res, next) {
+  if (req.session.user) {
+    return next();
+  } else {
+    return res.status(500).json({ message: 'Missing Login session' });
+  }
+}

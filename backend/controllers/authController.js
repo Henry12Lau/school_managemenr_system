@@ -51,10 +51,19 @@ exports.login = async (req, res) => {
         }
         const loginUser = { id: user.id, no: user.no, username: user.username, permission: permission };
         req.session.user = loginUser;
-       
+
         return res.json({ message: 'Login successful' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error fetching user' });
     }
+};
+exports.logout = async (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).json({ message: 'Error' });
+        }
+        return res.json({ message: 'Success' });
+    });
 };
