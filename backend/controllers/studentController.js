@@ -38,3 +38,23 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({ message: 'Error' });
     }
 };
+exports.getBySubjectClass = async (req, res) => {
+    try {
+        const { id } = req.query;
+        const { rows } = await client.query(
+            `
+            SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel
+            FROM subject_class sc
+            LEFT JOIN subject s ON s.id = sc.subject_id AND s.is_deleted = FALSE
+            LEFT JOIN subject_class_student scs ON scs.subject_class_id = sc.id AND scs.is_deleted = FALSE
+            LEFT JOIN student st ON st.id = scs.student_id AND st.is_deleted = FALSE
+            WHERE sc.id = $1 AND sc.is_deleted = FALSE
+            `,
+            [id]
+        );
+        return res.json({ students: rows, message: 'Success' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error' });
+    }
+};
