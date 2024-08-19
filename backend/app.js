@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes');
 const manageRoutes = require('./routes/manageRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const staffRoutes = require('./routes/staffRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 
 const port = 3000;
 const app = express();
@@ -22,6 +23,7 @@ app.get('/', function (req, res) {
 app.use('/auth', authRoutes);
 
 
+app.use('/course', isLoggedIn(['student', 'admin', 'officer', 'techer']), courseRoutes);
 
 app.use('/student', isLoggedIn(['student']), studentRoutes);
 app.use('/staff', isLoggedIn(['admin', 'officer', 'techer']), staffRoutes);
