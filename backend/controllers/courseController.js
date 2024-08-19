@@ -4,7 +4,7 @@ exports.get = async (req, res) => {
     try {
         const { id } = req.query;
         const { rows } = await client.query(
-            `SELECT id, course_code, course_name, category FROM course WHERE id = $1 AND is_deleted = false`,
+            `SELECT id, course_code, course_name, category FROM course WHERE id = $1 AND is_deleted = FALSE`,
             [id]
         );
         return res.json({ course: rows[0], message: 'Success' });
@@ -17,7 +17,7 @@ exports.getAll = async (req, res) => {
     try {
         const { id } = req.query;
         const { rows } = await client.query(
-            `SELECT id, course_code, course_name, category FROM course WHERE is_deleted = false`
+            `SELECT id, course_code, course_name, category FROM course WHERE is_deleted = FALSE`
         );
         return res.json({ courses: rows, message: 'Success' });
     } catch (err) {

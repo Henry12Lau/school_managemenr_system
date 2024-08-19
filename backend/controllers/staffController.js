@@ -9,9 +9,9 @@ exports.get = async (req, res) => {
             (
                 SELECT string_agg(title_name, ', ')
                 FROM staff_title st
-                LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = false
-                WHERE staff_id = s.id AND st.is_deleted = false
-            ) AS title FROM staff s WHERE s.id = $1 AND is_deleted = false`,
+                LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = FALSE
+                WHERE staff_id = s.id AND st.is_deleted = FALSE
+            ) AS title FROM staff s WHERE s.id = $1 AND is_deleted = FALSE`,
             [id]
         );
         return res.json({ student: rows[0], message: 'Success' });
@@ -20,7 +20,6 @@ exports.get = async (req, res) => {
         res.status(500).json({ message: 'Error' });
     }
 };
-
 exports.getAll = async (req, res) => {
     try {
         const { rows } = await client.query(
@@ -28,9 +27,9 @@ exports.getAll = async (req, res) => {
             (
                 SELECT string_agg(title_name, ', ')
                 FROM staff_title st
-                LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = false
-                WHERE staff_id = s.id AND st.is_deleted = false
-            ) AS title FROM staff s WHERE is_deleted = false`
+                LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = FALSE
+                WHERE staff_id = s.id AND st.is_deleted = FALSE
+            ) AS title FROM staff s WHERE is_deleted = FALSE`
         );
         return res.json({ staffs: rows, message: 'Success' });
     } catch (err) {
@@ -43,7 +42,7 @@ exports.resetPassword = async (req, res) => {
         const { id, password } = req.query;
         const hashedPassword = await hashPassword(password);
         await client.query(
-            'UPDATE staff SET password = $1, update_date = now() WHERE id = $2 AND is_deleted = false', [hashedPassword, id]
+            'UPDATE staff SET password = $1, update_date = now() WHERE id = $2 AND is_deleted = FALSE', [hashedPassword, id]
         );
         return res.json({ message: 'Success' });
     } catch (err) {

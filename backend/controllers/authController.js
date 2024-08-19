@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
         let permission = [];
         if (type == "student") {
             const studentResult = await client.query(
-                'SELECT id, student_no AS no, username, password FROM student WHERE username = $1 and is_deleted = false',
+                'SELECT id, student_no AS no, username, password FROM student WHERE username = $1 and is_deleted = FALSE',
                 [username]
             );
 
@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
             }
         } else {
             const staffResult = await client.query(
-                'SELECT id, staff_no AS no, username, password FROM staff WHERE username = $1 and is_deleted = false',
+                'SELECT id, staff_no AS no, username, password FROM staff WHERE username = $1 and is_deleted = FALSE',
                 [username]
             );
 
@@ -30,8 +30,8 @@ exports.login = async (req, res) => {
                 const titleResult = await client.query(
                     `
                     SELECT title_name FROM staff_title st
-                    LEFT JOIN title t ON st.title_id = t.id AND t.is_deleted = false
-                    WHERE staff_id = $1 AND st.is_deleted = false
+                    LEFT JOIN title t ON st.title_id = t.id AND t.is_deleted = FALSE
+                    WHERE staff_id = $1 AND st.is_deleted = FALSE
                     `,
                     [user.id]
                 );
