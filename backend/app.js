@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const studentRoutes = require('./routes/studentRoutes');
 
 const port = 3000;
 const app = express();
@@ -21,6 +22,7 @@ app.use('/auth', authRoutes);
 
 
 
+app.use('/student', isLoggedIn(['student']), studentRoutes);
 
 app.use('/user', isLoggedIn(['admin']), userRoutes);
 
