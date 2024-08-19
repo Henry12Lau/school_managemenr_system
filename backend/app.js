@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const manageRoutes = require('./routes/manageRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const staffRoutes = require('./routes/staffRoutes');
 
@@ -25,7 +25,7 @@ app.use('/auth', authRoutes);
 
 app.use('/student', isLoggedIn(['student']), studentRoutes);
 app.use('/staff', isLoggedIn(['admin', 'officer', 'techer']), staffRoutes);
-app.use('/user', isLoggedIn(['admin']), userRoutes);
+app.use('/manage', isLoggedIn(['admin', 'officer']), manageRoutes);
 
 app.listen(port, function () {
   console.log(`Server is running on port ${port}!`);
