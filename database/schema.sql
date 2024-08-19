@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "class" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.class: 1 rows
+-- Dumping data for table public.class: -1 rows
 DELETE FROM "class";
 /*!40000 ALTER TABLE "class" DISABLE KEYS */;
 INSERT INTO "class" ("id", "course_id", "start_date", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS "class_subject" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.class_subject: 2 rows
+-- Dumping data for table public.class_subject: -1 rows
 DELETE FROM "class_subject";
 /*!40000 ALTER TABLE "class_subject" DISABLE KEYS */;
 INSERT INTO "class_subject" ("id", "class_id", "subject_id", "staff_id", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS "class_subject_resources" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.class_subject_resources: 0 rows
+-- Dumping data for table public.class_subject_resources: -1 rows
 DELETE FROM "class_subject_resources";
 /*!40000 ALTER TABLE "class_subject_resources" DISABLE KEYS */;
 /*!40000 ALTER TABLE "class_subject_resources" ENABLE KEYS */;
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS "class_subject_schedule" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.class_subject_schedule: 0 rows
+-- Dumping data for table public.class_subject_schedule: -1 rows
 DELETE FROM "class_subject_schedule";
 /*!40000 ALTER TABLE "class_subject_schedule" DISABLE KEYS */;
 /*!40000 ALTER TABLE "class_subject_schedule" ENABLE KEYS */;
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS "course" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.course: 1 rows
+-- Dumping data for table public.course: -1 rows
 DELETE FROM "course";
 /*!40000 ALTER TABLE "course" DISABLE KEYS */;
 INSERT INTO "course" ("id", "course_code", "name", "duration", "category", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS "course_subject" (
 	PRIMARY KEY ("id")
 );
 
--- Dumping data for table public.course_subject: 2 rows
+-- Dumping data for table public.course_subject: -1 rows
 DELETE FROM "course_subject";
 /*!40000 ALTER TABLE "course_subject" DISABLE KEYS */;
 INSERT INTO "course_subject" ("id", "course_id", "subject_id", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS "staff" (
 DELETE FROM "staff";
 /*!40000 ALTER TABLE "staff" DISABLE KEYS */;
 INSERT INTO "staff" ("id", "staff_no", "surname", "sex", "tel", "onboard_date", "last_date", "create_date", "create_id", "update_date", "update_id", "is_deleted", "given_name", "username", "password") VALUES
-	(1, 'T2400001', 'LAW', 'M', '24567111', '2024-01-01 00:00:00', NULL, '2024-08-09 17:33:25.388089', NULL, '2024-08-09 17:33:25.388089', NULL, 'false', 'Admin', 'admin', 'admin');
+	(1, 'T2400001', 'LAW', 'M', '24567111', '2024-01-01 00:00:00', NULL, '2024-08-09 17:33:25.388089', NULL, '2024-08-19 13:12:46.188457', NULL, 'false', 'Admin', 'admin', '$2b$10$4Ww5j5qJrrGuoHsC25Cw2uPZBN4f0KSXzX9M99oAkrc7uGhCLQqdG');
 /*!40000 ALTER TABLE "staff" ENABLE KEYS */;
 
 -- Dumping structure for table public.staff_title
@@ -200,14 +200,16 @@ CREATE TABLE IF NOT EXISTS "student" (
 	"update_date" TIMESTAMP NOT NULL DEFAULT now(),
 	"update_id" INTEGER NULL DEFAULT NULL,
 	"is_deleted" BOOLEAN NOT NULL DEFAULT false,
+	"username" VARCHAR NOT NULL,
+	"password" VARCHAR NOT NULL,
 	PRIMARY KEY ("id")
 );
 
 -- Dumping data for table public.student: 1 rows
 DELETE FROM "student";
 /*!40000 ALTER TABLE "student" DISABLE KEYS */;
-INSERT INTO "student" ("id", "student_no", "course_id", "surname", "given_name", "sex", "tel", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
-	(1, 'SIT240001', 1, 'LAW', 'Student', 'M', '2456777', '2024-08-09 17:42:05.448518', 1, '2024-08-09 17:42:05.448518', 1, 'false');
+INSERT INTO "student" ("id", "student_no", "course_id", "surname", "given_name", "sex", "tel", "create_date", "create_id", "update_date", "update_id", "is_deleted", "username", "password") VALUES
+	(1, 'SIT240001', 1, 'LAW', 'Student', 'M', '2456777', '2024-08-09 17:42:05.448518', 1, '2024-08-09 17:42:05.448518', 1, 'false', 'student', '$2b$10$mJDZ.JqTKGEzJ0d7wBAlvOHuI1C7hw9MQXJS9OzruSZwJLftwnfZO');
 /*!40000 ALTER TABLE "student" ENABLE KEYS */;
 
 -- Dumping structure for table public.student_class
