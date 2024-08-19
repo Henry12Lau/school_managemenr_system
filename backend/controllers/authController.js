@@ -1,5 +1,5 @@
 const client = require('../config/db');
-const bcrypt = require('bcrypt');
+const { comparePassword } = require('../utils/hash');
 
 exports.login = async (req, res) => {
     try {
@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
                 return res.status(404).json({ message: 'Invalid username or password' });
             }
         }
-        const isMatch = bcrypt.compare(password, user.password);
+        const isMatch = comparePassword(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }

@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const studentController = require('../controllers/studentController');
+const staffController = require('../controllers/staffController');
 
-router.post('/students', userController.getAllStudents);
-router.post('/resetStudentPassword', userController.resetStudentPassword);
-router.post('/staffs', userController.getAllStaffs);
-router.post('/resetStaffPassword', userController.resetStaffPassword);
+router.post('/students', studentController.getAll);
+router.post('/resetStudentPassword', studentController.resetPassword);
+router.post('/staffs', staffController.getAll);
+router.post('/resetStaffPassword', staffController.resetPassword);
 
 module.exports = router;
