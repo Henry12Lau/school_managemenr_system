@@ -28,7 +28,13 @@ exports.resetStudentPassword = async (req, res) => {
 exports.getAllStaffs = async (req, res) => {
     try {
         const { rows } = await client.query(
-            'SELECT id, staff_no AS no, username FROM staff WHERE is_deleted = false'
+            `SELECT id, staff_no AS no, username, 
+            (
+                SELECT string_agg(title_name, ', ')
+                FROM staff_title st
+                LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = false
+                WHERE staff_id = s.id AND st.is_deleted = false
+            ) AS title FROM staff s WHERE is_deleted = false`
         );
         return res.json({ staffs: rows, message: 'Success' });
     } catch (err) {
