@@ -23,14 +23,16 @@ CREATE TABLE IF NOT EXISTS "class" (
 	"update_date" TIMESTAMP NOT NULL DEFAULT now(),
 	"update_id" INTEGER NULL DEFAULT NULL,
 	"is_deleted" BOOLEAN NOT NULL DEFAULT false,
+	"class_name" VARCHAR NULL DEFAULT NULL,
+	"start_year" VARCHAR NULL DEFAULT NULL,
 	PRIMARY KEY ("id")
 );
 
 -- Dumping data for table public.class: -1 rows
 DELETE FROM "class";
 /*!40000 ALTER TABLE "class" DISABLE KEYS */;
-INSERT INTO "class" ("id", "course_id", "start_date", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
-	(3, 1, '2024-09-01 17:46:06', '2024-08-09 17:46:40.804003', 1, '2024-08-09 17:46:40.804003', 1, 'false');
+INSERT INTO "class" ("id", "course_id", "start_date", "create_date", "create_id", "update_date", "update_id", "is_deleted", "class_name", "start_year") VALUES
+	(3, 1, '2024-09-01 17:46:06', '2024-08-09 17:46:40.804003', 1, '2024-08-09 17:46:40.804003', 1, 'false', 'A', '2024');
 /*!40000 ALTER TABLE "class" ENABLE KEYS */;
 
 -- Dumping structure for table public.class_student
@@ -38,11 +40,11 @@ CREATE TABLE IF NOT EXISTS "class_student" (
 	"id" SERIAL NOT NULL,
 	"class_id" INTEGER NULL DEFAULT NULL,
 	"student_id" INTEGER NULL DEFAULT NULL,
-	"create_date" TIMESTAMP NULL DEFAULT now(),
+	"create_date" TIMESTAMP NOT NULL DEFAULT now(),
 	"create_id" INTEGER NULL DEFAULT NULL,
-	"update_date" TIMESTAMP NULL DEFAULT now(),
+	"update_date" TIMESTAMP NOT NULL DEFAULT now(),
 	"update_id" INTEGER NULL DEFAULT NULL,
-	"is_deleted" BOOLEAN NULL DEFAULT NULL,
+	"is_deleted" BOOLEAN NOT NULL DEFAULT false,
 	PRIMARY KEY ("id")
 );
 
@@ -116,7 +118,7 @@ DELETE FROM "class_subject_schedule";
 CREATE TABLE IF NOT EXISTS "course" (
 	"id" SERIAL NOT NULL,
 	"course_code" VARCHAR NULL DEFAULT NULL,
-	"name" VARCHAR NULL DEFAULT NULL,
+	"course_name" VARCHAR NULL DEFAULT NULL,
 	"duration" VARCHAR NULL DEFAULT NULL,
 	"category" VARCHAR NULL DEFAULT NULL,
 	"create_date" TIMESTAMP NOT NULL DEFAULT now(),
@@ -130,7 +132,7 @@ CREATE TABLE IF NOT EXISTS "course" (
 -- Dumping data for table public.course: -1 rows
 DELETE FROM "course";
 /*!40000 ALTER TABLE "course" DISABLE KEYS */;
-INSERT INTO "course" ("id", "course_code", "name", "duration", "category", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
+INSERT INTO "course" ("id", "course_code", "course_name", "duration", "category", "create_date", "create_id", "update_date", "update_id", "is_deleted") VALUES
 	(1, 'IT00001', 'Computering', '2', 'IT', '2024-08-09 17:43:26.246592', 1, '2024-08-09 17:43:26.246592', 1, 'false');
 /*!40000 ALTER TABLE "course" ENABLE KEYS */;
 
@@ -232,7 +234,7 @@ INSERT INTO "student" ("id", "student_no", "course_id", "surname", "given_name",
 CREATE TABLE IF NOT EXISTS "subject" (
 	"id" SERIAL NOT NULL,
 	"subject_no" VARCHAR NULL DEFAULT NULL,
-	"name" VARCHAR NULL DEFAULT NULL,
+	"subject_name" VARCHAR NULL DEFAULT NULL,
 	"create_date" TIMESTAMP NOT NULL DEFAULT now(),
 	"create_id" INTEGER NULL DEFAULT NULL,
 	"update_date" TIMESTAMP NOT NULL DEFAULT now(),
@@ -246,7 +248,7 @@ CREATE TABLE IF NOT EXISTS "subject" (
 -- Dumping data for table public.subject: -1 rows
 DELETE FROM "subject";
 /*!40000 ALTER TABLE "subject" DISABLE KEYS */;
-INSERT INTO "subject" ("id", "subject_no", "name", "create_date", "create_id", "update_date", "update_name", "is_deleted", "number_of_lesson", "lesson_duration") VALUES
+INSERT INTO "subject" ("id", "subject_no", "subject_name", "create_date", "create_id", "update_date", "update_name", "is_deleted", "number_of_lesson", "lesson_duration") VALUES
 	(2, 'IT0001', 'Database', '2024-08-09 17:44:33.53569', 1, '2024-08-09 17:44:33.53569', 1, 'false', 7, 3),
 	(3, 'IT0002', 'Gaming', '2024-08-09 17:45:16.478623', 1, '2024-08-09 17:45:16.478623', 1, 'false', 12, 3);
 /*!40000 ALTER TABLE "subject" ENABLE KEYS */;
