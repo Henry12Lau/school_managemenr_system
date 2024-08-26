@@ -3,7 +3,7 @@ const client = require('../config/db');
 exports.get = async (req, res) => {
     try {
         const { id } = req.query;
-        const { rows } = await client.query(
+        const { rows } = await client.body(
             `SELECT id, subject_no, subject_name, number_of_lesson FROM subject WHERE id = $1 AND is_deleted = FALSE`,
             [id]
         );
@@ -26,7 +26,7 @@ exports.getAll = async (req, res) => {
 };
 exports.getByCourse = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `
             SELECT cs.course_id, cs.subject_id , subject_no, subject_name, number_of_lesson

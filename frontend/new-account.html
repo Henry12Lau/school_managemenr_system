@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
+    <!-- Datatable -->
+    <link href="./vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="./css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+    <div id="main-wrapper">
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="./images/logo.png" alt="">
+                <img class="logo-compact" src="./images/logo-text.png" alt="">
+                <img class="brand-title" src="./images/logo-text.png" alt="">
+            </a>
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left"></div>
+                        <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="./login.html" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Main Menu</li>
+                    <li class="mm-active"><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text">Account</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="./student-acc.html">New Account</a></li>
+                            <li><a href="./student-acc.html">Teacher</a></li>
+                            <li><a href="./student-acc.html">Student</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Schedule</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="./student-acc.html">Time Table</a></li>
+                            <li><a href="./student-acc.html">Make Appointment</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-chart-bar-33"></i><span class="nav-text">Attendance</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="./student-acc.html">CS412</a></li>
+                            <li><a href="./student-acc.html">CS413</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="./student-acc.html"><i class="icon icon-single-04"></i>Teacher</a>
+                    </li>
+                    <li><a href="./student-acc.html"><i class="icon icon-single-04"></i>Student</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+            Content body start
+        ***********************************-->
+    <div class="content-body">
+        <div class="container-fluid">
+            <div class="row page-titles mx-0">
+                <h3>New Account</h3>
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-default">
+                        <!-- <div class="card-header card-header-border-bottom">
+                            <h2>Basic Validation</h2>
+                        </div> -->
+                        <div class="card-body">
+                            <form>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationServer01">First name</label>
+                                        <input type="text" class="form-control" id="validationServer01"
+                                            placeholder="First name" value="" required>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationServer02">Last name</label>
+                                        <input type="text" class="form-control" id="validationServer02"
+                                            placeholder="Last name" value="" required>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationServerUsername">Username</label>
+                                        <input type="text" class="form-control" id="validationServerUsername"
+                                            placeholder="Username" aria-describedby="inputGroupPrepend3" required>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationServerUsername">Password</label>
+                                        <input type="text" class="form-control" id="validationServerUsername"
+                                            placeholder="Password" aria-describedby="inputGroupPrepend3" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-form-label col-sm-2 pt-0">Type</label>
+                                    <div class="col-sm-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gridRadios" value="option1" checked>
+                                            <label class="form-check-label" style="color: black;">
+                                                Student
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gridRadios" value="option2">
+                                            <label class="form-check-label" style="color: black;">
+                                                Teacher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+    <!--**********************************
+            Footer start
+        ***********************************-->
+    <div class="footer">
+        <div class="copyright">
+            <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">HKIT</a> 2024</p>
+        </div>
+    </div>
+    <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="./vendor/global/global.min.js"></script>
+    <script src="./js/quixnav-init.js"></script>
+    <script src="./js/custom.min.js"></script>
+
+
+
+    <!-- Datatable -->
+    <script src="./vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="./js/plugins-init/datatables.init.js"></script>
+
+</body>
+
+</html>

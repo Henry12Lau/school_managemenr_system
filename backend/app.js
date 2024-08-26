@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
 const manageRoutes = require('./routes/manageRoutes');
@@ -7,8 +8,12 @@ const staffRoutes = require('./routes/staffRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const subjectRoutes = require('./routes/subjectRoutes');
 
-const port = 3000;
+const port = 8080;
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your Nuxt.js app's domain
+  credentials: true
+}));
 app.use(express.json());
 app.use(session({
   secret: 'DETtHQyF2WCTa4AWT+plvxQiyvydu6O2FJ55cltGfr0=',
@@ -23,11 +28,11 @@ app.get('/', function (req, res) {
 
 app.use('/auth', authRoutes);
 
-app.use('/course', isLoggedIn(['student', 'admin', 'officer', 'techer']), courseRoutes);
-app.use('/subject', isLoggedIn(['student', 'admin', 'officer', 'techer']), subjectRoutes);
+app.use('/course', isLoggedIn(['student', 'admin', 'officer', 'teacher']), courseRoutes);
+app.use('/subject', isLoggedIn(['student', 'admin', 'officer', 'teacher']), subjectRoutes);
 
 app.use('/student', isLoggedIn(['student']), studentRoutes);
-app.use('/staff', isLoggedIn(['admin', 'officer', 'techer']), staffRoutes);
+app.use('/staff', isLoggedIn(['admin', 'officer', 'teacher']), staffRoutes);
 app.use('/manage', isLoggedIn(['admin', 'officer']), manageRoutes);
 
 app.listen(port, function () {

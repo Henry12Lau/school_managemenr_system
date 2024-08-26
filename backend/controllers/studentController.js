@@ -3,7 +3,7 @@ const { hashPassword } = require('../utils/hash');
 
 exports.get = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             'SELECT id, student_no AS no, course_id, surname, given_name, sex, tel, username FROM student WHERE id = $1 AND is_deleted = FALSE',
             [id]
@@ -27,7 +27,7 @@ exports.getAll = async (req, res) => {
 };
 exports.resetPassword = async (req, res) => {
     try {
-        const { id, password } = req.query;
+        const { id, password } = req.body;
         const hashedPassword = await hashPassword(password);
         await client.query(
             'UPDATE student SET password = $1, update_date = now() WHERE id = $2 AND is_deleted = FALSE', [hashedPassword, id]
@@ -40,7 +40,7 @@ exports.resetPassword = async (req, res) => {
 };
 exports.getBySubjectClass = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `
             SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel
