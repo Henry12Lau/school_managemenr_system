@@ -11,9 +11,8 @@ const subjectRoutes = require('./routes/subjectRoutes');
 const port = 8080;
 const app = express();
 app.use(cors({
-  origin: '*', // Replace with your Nuxt.js app's domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'http://localhost:3000', // Replace with your Nuxt.js app's domain
+  credentials: true
 }));
 app.use(express.json());
 app.use(session({
