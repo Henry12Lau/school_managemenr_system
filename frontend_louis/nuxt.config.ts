@@ -1,9 +1,16 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   //...
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
   build: {
     transpile: ['vuetify'],
   },
+  extends: ['@nuxt/ui-pro'],
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -12,6 +19,7 @@ export default defineNuxtConfig({
       })
     },
     //...
+    '@nuxt/ui',
   ],
   vite: {
     vue: {
@@ -25,4 +33,5 @@ export default defineNuxtConfig({
       apiBaseUrl: 'http://localhost:8080'
     }
   },
+  
 })

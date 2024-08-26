@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-center align-center" style="height:100vh;">
+    <div class="d-flex justify-center align-center" style="height:80vh;">
         <v-form @submit.prevent="login">
             <v-card class="mx-auto" width="400">
                 <v-card-title><span class="font-weight">School Management System</span></v-card-title>
@@ -9,7 +9,7 @@
                     <v-text-field v-model="password" type="password" label="Password" required></v-text-field>
                     <v-select v-model="type" :items="loginTypes" label="Login Type"></v-select>
                 </v-card-text>
-                <v-card-action><v-btn type="submit" block>Login</v-btn></v-card-action>
+                <v-card-actions><v-btn type="submit" block>Login</v-btn></v-card-actions>
             </v-card>
         </v-form>
     </div>
@@ -24,6 +24,9 @@
 </template>
 
 <script>
+// definePageMeta({
+//   layout: null
+// })
 export default {
     data() {
         return {
@@ -48,19 +51,19 @@ export default {
                         username: this.username,
                         password: this.password,
                     },
-
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    credentials: 'include'
                 });
+                
                 // Handle successful login
+                // console.log(response.message)
                 if (this.type.toLowerCase() == "student") {
                     await this.$router.push('/student');
                 } else {
                     await this.$router.push('/staff');
                 }
             } catch (error) {
-                this.error = error.response.message || 'Invalid username or password';
+                console.log(error)
+                this.error = 'Invalid username or password';
                 this.errorMessage = true;
             } finally {
                 this.loading = false;
