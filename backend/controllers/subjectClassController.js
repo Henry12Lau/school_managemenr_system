@@ -2,7 +2,7 @@ const client = require('../config/db');
 
 exports.get = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `
             SELECT sc.id AS subject_class_id, sc.subject_id, sc.staff_id, s.subject_no, s.subject_name, st.staff_no, st.surname, st.given_name, st.sex, st.tel
@@ -38,7 +38,7 @@ exports.getAll = async (req, res) => {
 };
 exports.getSubjectResourse = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `
             SELECT id, subject_class_id, title, description, start_date, end_date, file_path

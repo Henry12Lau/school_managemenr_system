@@ -2,7 +2,7 @@ const client = require('../config/db');
 
 exports.get = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `SELECT id, course_code, course_name, category FROM course WHERE id = $1 AND is_deleted = FALSE`,
             [id]
@@ -15,7 +15,7 @@ exports.get = async (req, res) => {
 };
 exports.getAll = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.body;
         const { rows } = await client.query(
             `SELECT id, course_code, course_name, category FROM course WHERE is_deleted = FALSE`
         );

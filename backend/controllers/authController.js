@@ -3,7 +3,7 @@ const { comparePassword } = require('../utils/hash');
 
 exports.login = async (req, res) => {
     try {
-        const { type, username, password } = req.query;
+        const { type, username, password } = req.body;
         let user;
         let permission = [];
         if (type == "student") {
@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
                 user = studentResult.rows[0];
                 permission = ["student"];
             } else {
-                return res.status(404).json({ message: 'Invalid username or password' });
+                return res.status(401).json({ message: 'Invalid username or password' });
             }
         } else {
             const staffResult = await client.query(
@@ -42,12 +42,12 @@ exports.login = async (req, res) => {
                     return res.status(404).json({ message: 'Invalid permission' });
                 }
             } else {
-                return res.status(404).json({ message: 'Invalid username or password' });
+                return res.status(401).json({ message: 'Invalid username or password' });
             }
         }
         const isMatch = comparePassword(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid username or password' });
+            return res.status(401).json({ message: 'Invalid username or password' });
         }
         const loginUser = { id: user.id, no: user.no, username: user.username, permission: permission };
         req.session.user = loginUser;
