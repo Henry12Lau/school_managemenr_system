@@ -1,8 +1,8 @@
 <template>
     <UFooter>
-        <template #left>
+        <template #top>
             <p class="text-sm">
-                Copyright © {{ new Date().getFullYear() }}. All rights reserved.
+                School Management System © {{ new Date().getFullYear() }}. All rights reserved.
             </p>
         </template>
     </UFooter>
