@@ -42,32 +42,23 @@ export default {
     },
     methods: {
         async login() {
-            try {
-                this.loading = true;
-                const response = await $fetch(`${this.$config.public.apiBaseUrl}/auth/login`, {
-                    method: 'POST',
-                    body: {
-                        type: this.type.toLowerCase(),
-                        username: this.username,
-                        password: this.password,
-                    },
-                    credentials: 'include'
-                });
-                
-                // Handle successful login
-                // console.log(response.message)
+            this.loading = true;
+            await CallApi(`${this.$config.public.apiBaseUrl}/auth/login`, {
+                type: this.type.toLowerCase(),
+                username: this.username,
+                password: this.password,
+            }, (response) => {
                 if (this.type.toLowerCase() == "student") {
-                    await this.$router.push('/student');
+                    this.$router.push('/student');
                 } else {
-                    await this.$router.push('/staff');
+                    this.$router.push('/staff');
                 }
-            } catch (error) {
-                console.log(error)
+            }, (error) => {
+                console.log(error);
                 this.error = 'Invalid username or password';
                 this.errorMessage = true;
-            } finally {
-                this.loading = false;
-            }
+            });
+            this.loading = false;
         },
     },
 };
