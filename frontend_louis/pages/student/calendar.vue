@@ -47,7 +47,7 @@ export default {
                         })
                     });
                     mySelf.events = events;
-                    console.log(mySelf.events)
+                    // console.log(mySelf.events)
                 }, (error) => {
                     // console.log(error);
                 });
