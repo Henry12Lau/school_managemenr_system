@@ -10,7 +10,7 @@ exports.getByClass = async (req, res) => {
                 SELECT 1 FROM attendance att
                 WHERE att.student_id = st.id AND att.subject_class_schedule_id = scs.id AND att.is_deleted = FALSE) IS NULL THEN FALSE
             ELSE TRUE 
-        END AS isAttend
+        END AS is_attend
         FROM subject_class_schedule scs
         LEFT JOIN subject_class sc ON sc.id = scs.subject_class_id AND sc.is_deleted = FALSE
         LEFT JOIN subject s ON s.id = sc.subject_id AND s.is_deleted = FALSE
