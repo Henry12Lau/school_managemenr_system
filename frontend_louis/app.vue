@@ -2,6 +2,7 @@
 useSeoMeta({
   titleTemplate: 'School Management System',
 })
+import { CallApi } from '@/utils/ApiService';
 </script>
 <template>
   <div>
