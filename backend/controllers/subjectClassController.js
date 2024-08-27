@@ -41,7 +41,13 @@ exports.getByStudent = async (req, res) => {
     const { id } = req.body;
     const { rows } = await client.query(
       `
-        SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel, sch.lesson_start, sch.lesson_end
+        SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel, sch.lesson_start, sch.lesson_end,
+        CASE 
+            WHEN(
+                SELECT 1 FROM attendance att
+                WHERE att.student_id = st.id AND att.subject_class_schedule_id = sch.id AND att.is_deleted = FALSE) IS NULL THEN FALSE
+            ELSE TRUE 
+        END AS is_attend
         FROM subject_class sc
         LEFT JOIN subject s ON s.id = sc.subject_id AND s.is_deleted = FALSE
         LEFT JOIN subject_class_student scs ON scs.subject_class_id = sc.id AND scs.is_deleted = FALSE
