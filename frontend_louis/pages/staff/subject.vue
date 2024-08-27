@@ -67,6 +67,7 @@ export default {
 
             }, async (userinfo) => {
                 const { id, permission } = userinfo;
+                mySelf.userId = id;
                 mySelf.permission = permission;
                 await CallApi(`${this.$config.public.apiBaseUrl}/staff/schedule`, {
                     id: id

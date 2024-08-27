@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       dialog: false,
+      userId: 0,
       lessonId: 0,
       selected: [],
       attendances: [],
