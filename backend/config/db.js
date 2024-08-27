@@ -3,8 +3,8 @@ const { Client  } = require('pg');
 const dbConfig = {
   user: 'postgres',
   host: '127.0.0.1',
-  database: 'postgres',
-  password: 'P@ssw0rd',
+  database: 'hkit_sms',
+  password: '',
   port: 5432
 };
 
