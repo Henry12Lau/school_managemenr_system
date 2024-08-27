@@ -12,6 +12,7 @@
             </v-sheet>
         </v-col>
     </v-row>
+    <AppMarkAttendance ref="dialog" :userId="userId" :permission="permission" />
 </template>
 
 <script>
@@ -19,6 +20,8 @@ export default {
     data: () => ({
         focus: '',
         events: [],
+        userId: 0,
+        permission: '',
     }),
     mounted() {
         this.fetchEvents()
@@ -33,6 +36,8 @@ export default {
 
             }, async (userinfo) => {
                 const { id, permission } = userinfo;
+                mySelf.userId = id;
+                mySelf.permission = permission;
                 await CallApi(`${this.$config.public.apiBaseUrl}/staff/schedule`, {
                     id: id
                 }, (response) => {
@@ -56,8 +61,9 @@ export default {
             });
             this.loading = false;
         },
-        handleEventClick(id) {
-            console.log(id);
+        handleEventClick(lessonId) {
+            this.$refs.dialog.start(lessonId);
+            // this.$refs.dialog.dialog = true;
         },
         formattedDateTime(dateTimeValue) {
             // return dateTimeValue.toString("HH:mm")
