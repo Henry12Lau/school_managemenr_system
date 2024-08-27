@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <AppHeader />
     <v-card>
         <v-layout>
@@ -10,4 +10,19 @@
         </v-layout>
     </v-card>
     <AppFooter />
+</template> -->
+
+<template>
+    <!-- <AppHeader /> -->
+    <v-card>
+        <v-layout>
+            <AppHeaderSide />
+            <v-main>
+                <v-container>
+                    <slot />
+                </v-container>
+            </v-main>
+        </v-layout>
+    </v-card>
+    <!-- <AppFooter /> -->
 </template>
