@@ -5,9 +5,9 @@ useSeoMeta({
 import { CallApi } from '@/utils/ApiService';
 </script>
 <template>
-  <div>
-    <NuxtLayout>
+  <NuxtLayout>
+    <v-app>
       <NuxtPage />
-    </NuxtLayout>
-  </div>
+    </v-app>
+  </NuxtLayout>
 </template>
