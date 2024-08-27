@@ -6,12 +6,7 @@
       </v-card-title>
       <v-divider class="mt-3"></v-divider>
         <v-card-text class="px-4">
-
-          <v-data-table v-model="selected" :headers="headers" :items="attendances" item-value="student_id" show-select :disable-pagination="true" :hide-default-footer="true">
-            <template v-slot:item.exclusive="{ item }">
-              <v-checkbox-btn v-model="item.isAttend"></v-checkbox-btn>
-            </template>
-          </v-data-table>
+          <v-data-table v-model="selected" :headers="headers" :items="attendances" item-value="student_id" show-select :disable-pagination="true" :hide-default-footer="true"></v-data-table>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -78,7 +73,7 @@ export default {
         mySelf.attendances = response.attendances;
         const selected = []
         response.attendances.forEach(student => {
-        if (student.isattend)
+        if (student.is_attend)
             selected.push(student.student_id);
         });
         mySelf.selected = selected;
