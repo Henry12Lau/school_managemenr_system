@@ -62,7 +62,7 @@ exports.getByStaff = async (req, res) => {
     const { id } = req.body;
     const { rows } = await client.query(
       `
-      SELECT sc.id AS subject_class_id, sc.subject_id, st.id AS staff_id, s.subject_no, s.subject_name, st.staff_no, st.surname, st.given_name, st.sex, st.tel, sch.lesson_start, sch.lesson_end
+      SELECT sc.id AS subject_class_id, sc.subject_id, st.id AS staff_id, sch.id AS subject_class_schedule_id, s.subject_no, s.subject_name, st.staff_no, st.surname, st.given_name, st.sex, st.tel, sch.lesson_start, sch.lesson_end
       FROM subject_class sc
       LEFT JOIN subject s ON s.id = sc.subject_id AND s.is_deleted = FALSE
       LEFT JOIN staff st ON st.id = sc.staff_id  AND st.is_deleted = FALSE
