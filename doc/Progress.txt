@@ -1,2 +1,1 @@
-Missing Frond End
-Missing Attendance and schedule
+Missing Navbar, Layout, Management
