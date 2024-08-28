@@ -8,17 +8,16 @@ export default {
 <template>
   <v-layout>
     <v-navigation-drawer v-model="drawer">
-      <v-list density="compact" item-props :items="items" nav />
-
-      <template #append>
+      <v-list density="compact" item-props :items="items" nav>
         <v-list-item
-          class="ma-2"
+          v-for="item in items"
+          :key="item.title"
+          :prepend-icon="item.prependIcon"
+          :title="item.title"
           link
-          nav
-          prepend-icon="mdi-cog-outline"
-          title="Settings"
+          @click="navigateTo(item.title)"
         />
-      </template>
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar border="b" class="ps-4" flat>
@@ -39,12 +38,6 @@ export default {
 
           <v-menu activator="parent">
             <v-list density="compact" nav>
-              <v-list-item
-                append-icon="mdi-cog-outline"
-                link
-                title="Settings"
-              />
-
               <v-list-item append-icon="mdi-logout" link title="Logout" />
             </v-list>
           </v-menu>
@@ -52,51 +45,52 @@ export default {
       </template>
     </v-app-bar>
 
-    <v-main>
-      <div class="pa-4">
-        <v-sheet
-          border="dashed md"
-          color="surface-light"
-          height="500"
-          rounded="lg"
-          width="100%"
-        />
-      </div>
+    <v-main style="height: 500px;">
+      <v-card-text v-if="currentView === 'Home'">
+        This is the Content
+      </v-card-text>
+      <CalendarView v-if="currentView === 'Calendar'" />
     </v-main>
   </v-layout>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+import { ref } from 'vue'
+import CalendarView from './CalendarView.vue' // Import the Calendar component
 
-  const drawer = ref(true)
+const drawer = ref(true)
 
-  const items = ref([
-    {
-      title: 'Dashboard',
-      prependIcon: 'mdi-view-dashboard-outline',
-      link: true,
-    },
-    {
-      title: 'Team',
-      prependIcon: 'mdi-account-group',
-      link: true,
-    },
-    {
-      title: 'Projects',
-      prependIcon: 'mdi-briefcase-outline',
-      link: true,
-    },
-    {
-      title: 'Calendar',
-      prependIcon: 'mdi-calendar',
-      link: true,
-      to: '/student/calendar',
-    },
-    {
-      title: 'Reports',
-      prependIcon: 'mdi-file-chart-outline',
-      link: true,
-    },
-  ])
+const currentView = ref('Home')
+
+const items = ref([
+  {
+    title: 'Dashboard',
+    prependIcon: 'mdi-view-dashboard-outline',
+    link: true,
+  },
+  {
+    title: 'Team',
+    prependIcon: 'mdi-account-group',
+    link: true,
+  },
+  {
+    title: 'Projects',
+    prependIcon: 'mdi-briefcase-outline',
+    link: true,
+  },
+  {
+    title: 'Calendar',
+    prependIcon: 'mdi-calendar',
+    link: true,
+  },
+  {
+    title: 'Reports',
+    prependIcon: 'mdi-file-chart-outline',
+    link: true,
+  },
+])
+
+function navigateTo(view) {
+  currentView.value = view
+}
 </script>

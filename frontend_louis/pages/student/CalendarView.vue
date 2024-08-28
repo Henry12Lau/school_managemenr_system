@@ -1,4 +1,5 @@
 <template>
+    <v-card class="calendar-card">
     <v-row>
         <v-col>
             <v-sheet>
@@ -12,6 +13,7 @@
             </v-sheet>
         </v-col>
     </v-row>
+</v-card>
 </template>
 
 <script>
@@ -67,3 +69,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.calendar-card {
+margin: 16px;
+}
+</style>
