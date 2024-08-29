@@ -2,7 +2,7 @@
     <v-navigation-drawer v-model="drawer">
         <v-list density="compact" item-props :items="links" nav />
         <template #append>
-            <v-list-item class="ma-2" link nav prepend-icon="mdi-logout" title="Logout" to="logout" />
+            <v-list-item class="ma-2" link nav prepend-icon="mdi-logout" title="Logout" to="/logout" />
         </template>
     </v-navigation-drawer>
 
