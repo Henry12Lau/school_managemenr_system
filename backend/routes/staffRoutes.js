@@ -9,5 +9,7 @@ router.post('/schedule', subjectClassController.getByStaff);
 router.post('/lessonAttendance', attendanceController.getByClass);
 router.post('/updateAttendances', attendanceController.updateAttendances);
 router.post('/resetPassword', staffController.resetPassword);
+router.get('/getCourseMapping', staffController.getCourseMapping);
+router.get('/getCourseSubject', staffController.getCourseSubject);
 
 module.exports = router;

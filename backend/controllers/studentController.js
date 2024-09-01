@@ -62,7 +62,7 @@ exports.getBySubjectClass = async (req, res) => {
 exports.getStudentList = async (req, res) => {
     try {
         const { rows } = await client.query(
-            'SELECT id, student_no, surname, given_name, tel, username FROM student Order By student_no'
+            'SELECT id, student_no, surname, given_name, tel, username, is_deleted FROM student Order By student_no'
         );
         return res.json({ students: rows, message: 'Success' });
     } catch (err) {
@@ -73,16 +73,16 @@ exports.getStudentList = async (req, res) => {
 
 exports.editStudent = async (req, res) => {
     try {
-        const { surname, given_name, tel, password, student_no } = req.body;
+        const { surname, given_name, tel, password, student_no, is_deleted } = req.body;
         if (password !== '') {
             const hashedPassword = await hashPassword(password);
             await client.query(
-                'UPDATE student SET surname = $1, given_name = $2, tel = $3, password = $4 WHERE student_no = $5', 
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3, password = $4, update_date = now() WHERE student_no = $5', 
                 [surname, given_name, tel, hashedPassword, student_no]
             );
         } else {
             await client.query(
-                'UPDATE student SET surname = $1, given_name = $2, tel = $3 WHERE student_no = $4', 
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3, update_date = now() WHERE student_no = $4', 
                 [surname, given_name, tel, student_no]
             );
         }

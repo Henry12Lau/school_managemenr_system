@@ -64,7 +64,7 @@ export default {
                     prependIcon: 'mdi-calendar',
                     link: true,
                     to: '/staff/calendar'
-                }, {
+                },{
                     title: 'Subjects',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
@@ -74,6 +74,11 @@ export default {
                     prependIcon: 'mdi-account-circle-outline',
                     link: true,
                     to: '/staff/student_list'
+                },{
+                    title: 'Course',
+                    prependIcon: 'mdi-briefcase-outline',
+                    link: true,
+                    to: '/staff/course'
                 },]
             }
 

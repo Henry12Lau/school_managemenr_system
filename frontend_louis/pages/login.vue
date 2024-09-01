@@ -53,7 +53,7 @@ export default {
                     <v-text-field v-model="password" type="password" label="Password" required></v-text-field>
                     <v-select v-model="type" :items="loginTypes" label="Login Type"></v-select>
                 </v-card-text>
-                <v-card-actions><v-btn type="submit" block>Login</v-btn></v-card-actions>
+                <v-card-actions><v-btn type="submit" block color="primary">Login</v-btn></v-card-actions>
             </v-card>
         </v-form>
     </div>

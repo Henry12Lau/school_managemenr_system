@@ -16,8 +16,19 @@
         </td>
       </tr>
     </template>
-    <template v-slot:item.button="{ item }">
-      <v-btn outlined color="primary" @click="handleButtonClick(item)">{{ item.button }}</v-btn>
+    <template v-slot:item.status="{ item }">
+      <UBadge
+        :label="item.status ? 'Inactive' : 'Active'"
+        variant="subtle"
+        class="mb-0.5"
+        :color="item.status ? 'red' : 'blue'"
+      />
+    </template>
+    <!-- <template v-slot:item.detail="{ item }">
+      <v-btn outlined color="secondary" @click="handleButtonClick(item)">{{ item.detail }}</v-btn>
+    </template> -->
+    <template v-slot:item.edit="{ item }">
+      <v-btn outlined color="primary" @click="handleButtonClick(item)">{{ item.edit }}</v-btn>
     </template>
   </v-data-table-server>
 
@@ -25,7 +36,7 @@
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
       <v-card-title>
-        <span class="headline">Edit Student: {{ selectedItem.studentNum }}</span>
+        <span class="headline">Edit</span>
       </v-card-title>
       <v-card-text>
         <!-- Add your form or content here -->
@@ -35,6 +46,11 @@
         <v-text-field v-model="selectedItem.tel" label="Phone"></v-text-field>
         <v-text-field v-model="selectedItem.loginID" label="Login ID" readonly></v-text-field>
         <v-text-field v-model="selectedItem.password" label="Password"></v-text-field>
+        <v-select
+          v-model="statusString"
+          :items="['Active', 'Inactive']"
+          label="Status"
+        ></v-select>  
         <!-- Add more fields as needed -->
       </v-card-text>
       <v-card-actions>
@@ -56,7 +72,9 @@ export default {
       { title: 'Given Name', key: 'givenName', align: 'start' },
       { title: 'Phone', key: 'tel', align: 'start' },
       { title: 'Login ID', key: 'loginID', align: 'start' },
-      { title: '', key: 'button', align: 'end' },
+      { title: 'Status', key: 'status', align: 'start' },
+      { title: '', key: 'detail', align: 'end' },
+      { title: '', key: 'edit', align: 'end' },
     ],
     serverItems: [],
     loading: true,
@@ -67,6 +85,16 @@ export default {
     selectedItem: {},
     list: [],
   }),
+  computed: {
+    statusString: {
+      get() {
+        return this.selectedItem.status ? 'Inactive' : 'Active';
+      },
+      set(newValue) {
+        this.selectedItem.status = newValue === 'Inactive';
+      },
+    },
+  },
   watch: {
     name() {
       this.search = String(Date.now());
@@ -89,7 +117,9 @@ export default {
             givenName: student.given_name,
             tel: student.tel,
             loginID: student.username,
-            button: 'Edit'
+            status: student.is_deleted,
+            // detail: 'Detail',
+            edit: 'Edit'
           }));
           this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: [] });
         } else {
@@ -132,16 +162,19 @@ export default {
     },
     handleButtonClick(item) {
       this.selectedItem = { ...item };
+      console.log('Selected Item:', this.selectedItem);
       this.dialog = true;
     },
     async saveItem() {
       try {
+        console.log('Saving Item:', this.selectedItem);
         const payload = {
           surname: this.selectedItem.surname,
           given_name: this.selectedItem.givenName,
           tel: this.selectedItem.tel,
           password: this.selectedItem.password || '',
           student_no: this.selectedItem.studentNum,
+          // status: this.selectedItem.status ? 'true' : 'false',
         };
 
         const response = await fetch(`${this.$config.public.apiBaseUrl}/student/editStudent`, {
@@ -167,7 +200,8 @@ export default {
             surname: updatedStudent.surname,
             givenName: updatedStudent.given_name,
             tel: updatedStudent.tel,
-            password: updatedStudent.password,
+            loginID: updatedStudent.username,
+            status: updatedStudent.status,
             button: 'Edit'
           });
         }
