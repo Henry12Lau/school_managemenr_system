@@ -58,3 +58,38 @@ exports.getBySubjectClass = async (req, res) => {
         res.status(500).json({ message: 'Error' });
     }
 };
+
+exports.getStudentList = async (req, res) => {
+    try {
+        const { rows } = await client.query(
+            'SELECT id, student_no, surname, given_name, tel, username FROM student Order By student_no'
+        );
+        return res.json({ students: rows, message: 'Success' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error' });
+    }
+};
+
+exports.editStudent = async (req, res) => {
+    try {
+        const { surname, given_name, tel, password, student_no } = req.body;
+        if (password !== '') {
+            const hashedPassword = await hashPassword(password);
+            await client.query(
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3, password = $4 WHERE student_no = $5', 
+                [surname, given_name, tel, hashedPassword, student_no]
+            );
+        } else {
+            await client.query(
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3 WHERE student_no = $4', 
+                [surname, given_name, tel, student_no]
+            );
+        }
+
+        return res.json({ message: 'Success' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error' });
+    }
+};

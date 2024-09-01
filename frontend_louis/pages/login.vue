@@ -41,11 +41,12 @@ export default {
     },
 };
 </script>
-<template>
+<template>  
+
     <div class="d-flex justify-center align-center" style="height:80vh;">
         <v-form @submit.prevent="login">
             <v-card class="mx-auto" width="400">
-                <v-card-title><span class="font-weight">School Management System</span><UBadge label="SMS" variant="subtle" class="mb-0.5" /></v-card-title>
+                <v-card-title><span class="font-weight">School Management System </span><UBadge label="SMS" variant="subtle" class="mb-0.5" /></v-card-title>
                 <v-card-subtitle><span class="font-weight">Login</span></v-card-subtitle>
                 <v-card-text class="pb-0">
                     <v-text-field v-model="username" label="Username" required></v-text-field>

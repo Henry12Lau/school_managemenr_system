@@ -151,6 +151,9 @@ DELETE FROM "student";
 /*!40000 ALTER TABLE "student" DISABLE KEYS */;
 INSERT INTO "student" ("id", "student_no", "course_id", "surname", "given_name", "sex", "tel", "create_date", "create_id", "update_date", "update_id", "is_deleted", "username", "password") VALUES
 	(1, 'SIT240001', 1, 'LAW', 'Student', 'M', '2456777', '2024-08-09 17:42:05.448518', 1, '2024-08-19 16:15:09.535785', 1, 'false', 'student', '$2b$10$57Q3VhkPT14WJPnOZ8mgqOcLcZrIL/Eys4XD3OIvA96aC2edif3bC');
+	--(2, 'SIT240002', 1, 'Chan', 'Tai Man', 'M', '98764423', '2024-08-09 17:42:05.448518', 1, '2024-08-19 16:15:09.535785', 1, 'false', 'chan001', '$2b$10$57Q3VhkPT14WJPnOZ8mgqOcLcZrIL/Eys4XD3OIvA96aC2edif3bC')
+--	(3, 'SIT240003', 1, 'Lee', 'Siu Ming', 'M', '99887766', '2024-08-09 17:42:05.448518', 1, '2024-08-19 16:15:09.535785', 1, 'false', 'lee001', '$2b$10$57Q3VhkPT14WJPnOZ8mgqOcLcZrIL/Eys4XD3OIvA96aC2edif3bC')
+
 /*!40000 ALTER TABLE "student" ENABLE KEYS */;
 
 -- Dumping structure for table public.subject

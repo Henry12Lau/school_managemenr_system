@@ -69,6 +69,11 @@ export default {
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
                     to: '/staff/subject'
+                },{
+                    title: 'Student',
+                    prependIcon: 'mdi-account-circle-outline',
+                    link: true,
+                    to: '/staff/student_list'
                 },]
             }
 
