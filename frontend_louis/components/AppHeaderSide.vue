@@ -87,6 +87,11 @@ export default {
                     link: true,
                     to: '/staff/studentList'
                 }, {
+                    title: 'Staff',
+                    prependIcon: 'mdi-account-circle-outline',
+                    link: true,
+                    to: '/staff/staffList'
+                }, {
                     title: 'Course',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
