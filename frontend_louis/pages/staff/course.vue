@@ -25,9 +25,9 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-select v-model="selectedCourse" :items="courseOptions" item-text="course_name" item-value="course_code"
+            <v-select v-model="selectedCourse" :items="courseOptions" item-title="course_name" item-value="course_code"
               label="Select Course"></v-select>
-            <v-select v-model="selectedSubject" :items="subjectOptions" item-text="subject_name" item-value="subject_no"
+            <v-select v-model="selectedSubject" :items="subjectOptions" item-title="subject_name" item-value="subject_no"
               label="Select Subject" :disabled="!selectedCourse"></v-select>
           </v-form>
         </v-card-text>
@@ -69,31 +69,43 @@ export default {
   methods: {
     async getCourseMapping() {
       try {
-        const response = await fetch(`${this.$config.public.apiBaseUrl}/staff/getCourseMapping`);
-        const data = await response.json();
-        this.groupedCourses = this.groupByCourse(data.course);
-        this.courseOptions = Object.values(this.groupedCourses).map(subjects => ({
-          course_code: subjects[0].course_code,
-          course_name: subjects[0].course_name
-        }));
-        console.log('Grouped Courses:', this.groupedCourses);
+        var mySelf = this;
+        await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseMapping`, {}, (response) => {
+          mySelf.groupedCourses = mySelf.groupByCourse(response.course);
+          console.log('Grouped Courses:', mySelf.groupedCourses);
+        }, (error) => {
+          console.error(error);
+        });
       } catch (error) {
         console.error(error);
       }
     },
     async getCourseSubject() {
       try {
-        const response = await fetch(`${this.$config.public.apiBaseUrl}/staff/getCourseSubject`);
-        const data = await response.json();
-        console.log('Courses and Subjects:', data);
-        let courseArr = []
-        for (let i = 0; i < data[0].course.length; i++) {
-          courseArr.push({
-            course_name: data.course[i].course_name
-          });
-        }
-        this.selectedCourse = courseArr
-        console.log(courseArr)
+        var mySelf = this;
+        const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseSubject`, {}, (response) => {
+          // const data = await response.json();
+          // console.log('Courses and Subjects:', data);
+          mySelf.courseOptions = response.courses;
+          mySelf.selectedCourse = response.courses[0].course_code
+          console.log(mySelf.courseOptions)
+          // mySelf.subjectOptions = response.subjects;
+          // let courseArr = []
+          // for (let i = 0; i < data[0].course.length; i++) {
+          // for (let i = 0; i < response[0].course.length; i++) {
+          //   courseArr.push({
+          //     // course_name: data.course[i].course_name
+          //     course_name: response.course[i].course_name
+          //   });
+          // }
+          // mySelf.selectedCourse = courseArr
+          // console.log(courseArr)
+        }, (error) => {
+          console.error(error);
+
+
+        });
+
       } catch (error) {
         console.error(error);
       }
