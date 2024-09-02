@@ -96,6 +96,7 @@ export default {
         var students = [];
         response.students.forEach((item) => {
           students.push({
+            studentId: item.id,
             studentNum: item.student_no,
             surname: item.surname,
             givenName: item.given_name,
@@ -157,30 +158,14 @@ export default {
         tel: this.selectedItem.tel,
         password: this.selectedItem.password || '',
         student_no: this.selectedItem.studentNum,
+        id: this.selectedItem.studentId,
         // status: this.selectedItem.status ? 'true' : 'false',
       };
 
-      const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/editStudent`,
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/editStudent`,
         payload, (response) => {
-          // const updatedStudent = await response.json();
-          // console.log('Updated Student:', updatedStudent);
-
-          // Update the local list with the updated student information
-          const index = mySelf.list.findIndex(student => student.studentNum === response.student_no);
-          if (index !== -1) {
-            mySelf.$set(mySelf.list, index, {
-              studentNum: updatedStudent.student_no,
-              surname: updatedStudent.surname,
-              givenName: updatedStudent.given_name,
-              tel: updatedStudent.tel,
-              loginID: updatedStudent.username,
-              status: updatedStudent.status,
-              button: 'Edit'
-            });
-          }
-
-          mySelf.dialog = false; // Close the dialog throw new Error('Failed to update student information');
           mySelf.fetchStudentData();
+          mySelf.dialog = false;
         }, (error) => {
           console.log('Failed to update student information');
         }, this);

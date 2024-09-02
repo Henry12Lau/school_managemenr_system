@@ -60,17 +60,17 @@ exports.getBySubjectClass = async (req, res) => {
 };
 exports.editStudent = async (req, res) => {
     try {
-        const { surname, given_name, tel, password, student_no, is_deleted } = req.body;
+        const { id, surname, given_name, tel, password, student_no, is_deleted } = req.body;
         if (password !== '') {
             const hashedPassword = await hashPassword(password);
             await client.query(
-                'UPDATE student SET surname = $1, given_name = $2, tel = $3, password = $4, update_date = now() WHERE student_no = $5', 
-                [surname, given_name, tel, hashedPassword, student_no]
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3, password = $4, update_date = now() WHERE id = $5', 
+                [surname, given_name, tel, hashedPassword, id]
             );
         } else {
             await client.query(
-                'UPDATE student SET surname = $1, given_name = $2, tel = $3, update_date = now() WHERE student_no = $4', 
-                [surname, given_name, tel, student_no]
+                'UPDATE student SET surname = $1, given_name = $2, tel = $3, update_date = now() WHERE id = $4', 
+                [surname, given_name, tel, id]
             );
         }
 
