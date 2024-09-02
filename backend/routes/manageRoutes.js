@@ -8,4 +8,6 @@ router.post('/students/resetPassword', studentController.resetPassword);
 router.post('/staffs', staffController.getAll);
 router.post('/staffs/resetPassword', staffController.resetPassword);
 
+router.post('/studentList', studentController.getStudentList);
+router.post('/editStudent', studentController.editStudent);
 module.exports = router;

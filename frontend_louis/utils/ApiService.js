@@ -10,11 +10,12 @@ export async function CallApi(
       credentials: "include",
       body: data,
     }).then(async (response) => {
-      if (response.status != 200) {
-        if (failCallBackFunction != null) {
-          failCallBackFunction();
-        }
-      }
+      // console.log(response);
+      // if (response.status != 200) {
+      //   if (failCallBackFunction != null) {
+      //     failCallBackFunction();
+      //   }
+      // }
       if (successCallBackFunction != null) {
         successCallBackFunction(response);
       }
