@@ -91,7 +91,7 @@ export default {
   methods: {
     async fetchStudentData() {
       var mySelf = this;
-      await CallApi(`${this.$config.public.apiBaseUrl}/manage/studentList`, {}, (response) => {
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/students`, {}, (response) => {
         mySelf.list = [];
         var students = [];
         response.students.forEach((item) => {

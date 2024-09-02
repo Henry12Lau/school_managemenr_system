@@ -5,7 +5,7 @@ exports.get = async (req, res) => {
     try {
         const { id } = req.body;
         const { rows } = await client.query(
-            'SELECT id, student_no AS no, course_id, surname, given_name, sex, tel, username FROM student WHERE id = $1 AND is_deleted = FALSE',
+            'SELECT id, student_no, course_id, surname, given_name, sex, tel, username FROM student WHERE id = $1 AND is_deleted = FALSE',
             [id]
         );
         return res.json({ student: rows[0], message: 'Success' });
@@ -17,7 +17,7 @@ exports.get = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         const { rows } = await client.query(
-            'SELECT id, student_no AS no, username FROM student WHERE is_deleted = FALSE'
+            'SELECT id, student_no, surname, given_name, tel, username, is_deleted FROM student WHERE is_deleted = FALSE ORDER BY surname, given_name'
         );
         return res.json({ students: rows, message: 'Success' });
     } catch (err) {
@@ -58,19 +58,6 @@ exports.getBySubjectClass = async (req, res) => {
         res.status(500).json({ message: 'Error' });
     }
 };
-
-exports.getStudentList = async (req, res) => {
-    try {
-        const { rows } = await client.query(
-            'SELECT id, student_no, surname, given_name, tel, username, is_deleted FROM student Order By student_no'
-        );
-        return res.json({ students: rows, message: 'Success' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error' });
-    }
-};
-
 exports.editStudent = async (req, res) => {
     try {
         const { surname, given_name, tel, password, student_no, is_deleted } = req.body;
