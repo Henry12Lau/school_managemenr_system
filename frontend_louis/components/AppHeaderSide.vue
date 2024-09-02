@@ -56,7 +56,7 @@ export default {
                     title: 'Subjects',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
-                    to: '/student/list'
+                    to: '/student/calendarList'
                 }]
             } else if (permission == "teacher") {
                 this.links = [{
@@ -65,10 +65,10 @@ export default {
                     link: true,
                     to: '/staff/calendar'
                 }, {
-                    title: 'Subjects',
+                    title: 'Calendar List',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
-                    to: '/staff/subject'
+                    to: '/staff/calendarList'
                 },]
             } else {
                 this.links = [{
@@ -77,10 +77,10 @@ export default {
                     link: true,
                     to: '/staff/calendar'
                 }, {
-                    title: 'Subjects',
+                    title: 'Calendar List',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
-                    to: '/staff/subject'
+                    to: '/staff/calendarList'
                 }, {
                     title: 'Student',
                     prependIcon: 'mdi-account-circle-outline',

@@ -11,8 +11,9 @@ router.post('/staffs', staffController.getAll);
 router.post('/editStaff', staffController.editStaff);
 router.post('/staffs/resetPassword', staffController.resetPassword);
 
-router.post('/getCourseMapping', courseController.getCourseMapping);
 router.post('/getCourseSubject', courseController.getCourseSubject);
+router.post('/course/mappingList', courseController.getCourseMapping);
+router.post('/course/mapping', courseController.courseMapping);
 
 
 module.exports = router;

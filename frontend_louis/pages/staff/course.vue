@@ -25,10 +25,10 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-select v-model="selectedCourse" :items="courseOptions" item-title="course_name" item-value="course_code"
+            <v-select v-model="selectedCourse" :items="courseOptions" item-title="course_name" item-value="course_id"
               label="Select Course"></v-select>
-            <v-select v-model="selectedSubject" :items="subjectOptions" item-title="subject_name" item-value="subject_no"
-              label="Select Subject" :disabled="!selectedCourse"></v-select>
+            <v-combobox v-model="selectedSubjects" :items="subjectOptions" item-title="subject_name"
+              item-value="subject_id" label="Select the subject" :disabled="!selectedCourse" multiple></v-combobox>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -45,12 +45,12 @@
 export default {
   data() {
     return {
-      groupedCourses: {},
+      groupedCourses: [],
       dialog: false,
-      selectedCourse: null,
-      selectedSubject: null,
       courseOptions: [],
-      subjectOptions: []
+      subjectOptions: [],
+      selectedCourse: null,
+      selectedSubjects: []
     };
   },
   mounted() {
@@ -60,60 +60,57 @@ export default {
   watch: {
     selectedCourse(newCourse) {
       if (newCourse) {
-        this.subjectOptions = this.groupedCourses[newCourse];
-      } else {
-        this.subjectOptions = [];
+        this.selectedSubjects = this.groupedCourses[newCourse];
       }
+    },
+    dialog(newValue) {
+      this.selectedCourse = null;
+      this.selectedSubjects = [];
     }
   },
   methods: {
     async getCourseMapping() {
-      try {
-        var mySelf = this;
-        await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseMapping`, {}, (response) => {
-          mySelf.groupedCourses = mySelf.groupByCourse(response.course);
-          console.log('Grouped Courses:', mySelf.groupedCourses);
-        }, (error) => {
-          console.error(error);
-        }, this);
-      } catch (error) {
-        console.error(error);
-      }
+      var mySelf = this;
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/course/mappingList`, {}, (response) => {
+        mySelf.groupedCourses = mySelf.groupByCourse(response.course);
+        // console.log('Grouped Courses:', mySelf.groupedCourses);
+      }, (error) => {
+        // console.error(error);
+      }, this);
     },
     async getCourseSubject() {
       var mySelf = this;
       const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseSubject`, {}, (response) => {
-        // const data = await response.json();
-        // console.log('Courses and Subjects:', data);
         mySelf.courseOptions = response.courses;
         mySelf.subjectOptions = response.subjects;
-        // let courseArr = []
-        // for (let i = 0; i < data[0].course.length; i++) {
-        // for (let i = 0; i < response[0].course.length; i++) {
-        //   courseArr.push({
-        //     // course_name: data.course[i].course_name
-        //     course_name: response.course[i].course_name
-        //   });
-        // }
-        // mySelf.selectedCourse = courseArr
-        // console.log(courseArr)
       }, (error) => {
-        console.error(error);
+        // console.log(error);
       }, this);
     },
     groupByCourse(courses) {
       return courses.reduce((acc, course) => {
-        if (!acc[course.course_code]) {
-          acc[course.course_code] = [];
+        if (!acc[course.course_id]) {
+          acc[course.course_id] = [];
         }
-        acc[course.course_code].push(course);
+        acc[course.course_id].push(course);
         return acc;
       }, {});
     },
-    saveSelection() {
+    async saveSelection() {
       console.log('Selected Course:', this.selectedCourse);
-      console.log('Selected Subject:', this.selectedSubject);
-      this.dialog = false;
+      console.log('Selected Subject:', this.selectedSubjects.map(obj => obj.subject_id));
+      var mySelf = this;
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/course/mapping`, {
+        course: this.selectedCourse,
+        subjects: this.selectedSubjects.map(obj => obj.subject_id)
+      }, (response) => {
+        // mySelf.groupedCourses = mySelf.groupByCourse(response.course);
+        // console.log('Grouped Courses:', mySelf.groupedCourses);
+        mySelf.getCourseMapping();
+        mySelf.dialog = false;
+      }, (error) => {
+        // console.error(error);
+      }, this);
     }
   },
 }
