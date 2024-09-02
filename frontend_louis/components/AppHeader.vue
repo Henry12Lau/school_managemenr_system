@@ -32,7 +32,7 @@ export default {
             mySelf.SetMenuItem(response.permission)
         }, (error) => {
             // console.log(error);
-        });
+        }, this);
     },
     methods: {
         SetMenuItem(permission) {

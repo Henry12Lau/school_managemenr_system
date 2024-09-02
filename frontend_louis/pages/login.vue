@@ -35,7 +35,7 @@ export default {
                 console.log(error);
                 this.error = 'Invalid username or password';
                 this.errorMessage = true;
-            });
+            }, this);
             this.loading = false;
         },
     },

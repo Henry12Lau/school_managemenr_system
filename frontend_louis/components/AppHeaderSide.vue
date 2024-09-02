@@ -42,7 +42,7 @@ export default {
             mySelf.SetMenuItem(response.permission)
         }, (error) => {
             // console.log(error);
-        });
+        }, this);
     },
     methods: {
         SetMenuItem(permission) {
@@ -58,31 +58,42 @@ export default {
                     link: true,
                     to: '/student/list'
                 }]
+            } else if (permission == "teacher") {
+                this.links = [{
+                    title: 'Calendar',
+                    prependIcon: 'mdi-calendar',
+                    link: true,
+                    to: '/staff/calendar'
+                }, {
+                    title: 'Subjects',
+                    prependIcon: 'mdi-briefcase-outline',
+                    link: true,
+                    to: '/staff/subject'
+                },]
             } else {
                 this.links = [{
                     title: 'Calendar',
                     prependIcon: 'mdi-calendar',
                     link: true,
                     to: '/staff/calendar'
-                },{
+                }, {
                     title: 'Subjects',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
                     to: '/staff/subject'
-                },{
+                }, {
                     title: 'Student',
                     prependIcon: 'mdi-account-circle-outline',
                     link: true,
-                    to: '/staff/student_list'
-                },{
+                    to: '/staff/studentList'
+                }, {
                     title: 'Course',
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
                     to: '/staff/course'
                 },]
-            }
-
+            };
         }
     }
-};
+}
 </script>

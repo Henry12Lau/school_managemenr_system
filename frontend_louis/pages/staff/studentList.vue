@@ -1,28 +1,17 @@
 <template>
-  <v-data-table-server
-    v-model:items-per-page="itemsPerPage"
-    :headers="headers"
-    :items="serverItems"
-    :items-length="totalItems"
-    :loading="loading"
-    :search="search"
-    item-value="studentNum"
-    @update:options="loadItems"
-  >
+  <v-data-table-server v-model:items-per-page="itemsPerPage" :headers="headers" :items="serverItems"
+    :items-length="totalItems" :loading="loading" :search="search" item-value="studentNum" @update:options="loadItems">
     <template v-slot:top>
       <tr>
         <td>
-          <v-text-field v-model="name" class="ma-2" density="compact" placeholder="Search..." hide-details style="width: 300px;"></v-text-field>
+          <v-text-field v-model="name" class="ma-2" density="compact" placeholder="Search..." hide-details
+            style="width: 300px;"></v-text-field>
         </td>
       </tr>
     </template>
     <template v-slot:item.status="{ item }">
-      <UBadge
-        :label="item.status ? 'Inactive' : 'Active'"
-        variant="subtle"
-        class="mb-0.5"
-        :color="item.status ? 'red' : 'blue'"
-      />
+      <UBadge :label="item.status ? 'Inactive' : 'Active'" variant="subtle" class="mb-0.5"
+        :color="item.status ? 'red' : 'blue'" />
     </template>
     <!-- <template v-slot:item.detail="{ item }">
       <v-btn outlined color="secondary" @click="handleButtonClick(item)">{{ item.detail }}</v-btn>
@@ -46,11 +35,7 @@
         <v-text-field v-model="selectedItem.tel" label="Phone"></v-text-field>
         <v-text-field v-model="selectedItem.loginID" label="Login ID" readonly></v-text-field>
         <v-text-field v-model="selectedItem.password" label="Password"></v-text-field>
-        <v-select
-          v-model="statusString"
-          :items="['Active', 'Inactive']"
-          label="Status"
-        ></v-select>  
+        <v-select v-model="statusString" :items="['Active', 'Inactive']" label="Status"></v-select>
         <!-- Add more fields as needed -->
       </v-card-text>
       <v-card-actions>
@@ -100,34 +85,32 @@ export default {
       this.search = String(Date.now());
     },
   },
-  created() {
+  mounted() {
     this.fetchStudentData();
   },
   methods: {
     async fetchStudentData() {
-      try {
-        const response = await fetch(`${this.$config.public.apiBaseUrl}/student/studentList`);
-        const data = await response.json();
-        console.log('API Response:', data);
-
-        if (Array.isArray(data.students)) {
-          this.list = data.students.map(student => ({
-            studentNum: student.student_no,
-            surname: student.surname,
-            givenName: student.given_name,
-            tel: student.tel,
-            loginID: student.username,
-            status: student.is_deleted,
+      var mySelf = this;
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/studentList`, {}, (response) => {
+        mySelf.list = [];
+        var students = [];
+        response.students.forEach((item) => {
+          students.push({
+            studentNum: item.student_no,
+            surname: item.surname,
+            givenName: item.given_name,
+            tel: item.tel,
+            loginID: item.username,
+            status: item.is_deleted,
             // detail: 'Detail',
             edit: 'Edit'
-          }));
-          this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: [] });
-        } else {
-          console.error('Expected an array but got:', data.students);
-        }
-      } catch (error) {
+          })
+        }, this);
+        mySelf.list = students;
+        this.loadItems({ page: 1, itemsPerPage: mySelf.itemsPerPage, sortBy: [] });
+      }, (error) => {
         console.error('Error fetching student data:', error);
-      }
+      });
     },
     loadItems({ page, itemsPerPage, sortBy }) {
       this.loading = true;
@@ -166,50 +149,41 @@ export default {
       this.dialog = true;
     },
     async saveItem() {
-      try {
-        console.log('Saving Item:', this.selectedItem);
-        const payload = {
-          surname: this.selectedItem.surname,
-          given_name: this.selectedItem.givenName,
-          tel: this.selectedItem.tel,
-          password: this.selectedItem.password || '',
-          student_no: this.selectedItem.studentNum,
-          // status: this.selectedItem.status ? 'true' : 'false',
-        };
+      var mySelf = this;
+      console.log('Saving Item:', this.selectedItem);
+      const payload = {
+        surname: this.selectedItem.surname,
+        given_name: this.selectedItem.givenName,
+        tel: this.selectedItem.tel,
+        password: this.selectedItem.password || '',
+        student_no: this.selectedItem.studentNum,
+        // status: this.selectedItem.status ? 'true' : 'false',
+      };
 
-        const response = await fetch(`${this.$config.public.apiBaseUrl}/student/editStudent`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
+      const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/editStudent`,
+        payload, (response) => {
+          // const updatedStudent = await response.json();
+          // console.log('Updated Student:', updatedStudent);
 
-        if (!response.ok) {
-          throw new Error('Failed to update student information');
-        }
+          // Update the local list with the updated student information
+          const index = mySelf.list.findIndex(student => student.studentNum === response.student_no);
+          if (index !== -1) {
+            mySelf.$set(mySelf.list, index, {
+              studentNum: updatedStudent.student_no,
+              surname: updatedStudent.surname,
+              givenName: updatedStudent.given_name,
+              tel: updatedStudent.tel,
+              loginID: updatedStudent.username,
+              status: updatedStudent.status,
+              button: 'Edit'
+            });
+          }
 
-        const updatedStudent = await response.json();
-        console.log('Updated Student:', updatedStudent);
-
-        // Update the local list with the updated student information
-        const index = this.list.findIndex(student => student.studentNum === updatedStudent.student_no);
-        if (index !== -1) {
-          this.$set(this.list, index, {
-            studentNum: updatedStudent.student_no,
-            surname: updatedStudent.surname,
-            givenName: updatedStudent.given_name,
-            tel: updatedStudent.tel,
-            loginID: updatedStudent.username,
-            status: updatedStudent.status,
-            button: 'Edit'
-          });
-        }
-
-        this.dialog = false; // Close the dialog
-      } catch (error) {
-        console.error('Error updating student information:', error);
-      }
+          mySelf.dialog = false; // Close the dialog throw new Error('Failed to update student information');
+          mySelf.fetchStudentData();
+        }, (error) => {
+          console.log('Failed to update student information');
+        }, this);
     },
   },
 };
@@ -220,12 +194,15 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .v-card {
   margin-top: 20px;
 }
+
 .v-data-table {
   margin-top: 20px;
 }
+
 .v-pagination {
   margin-top: 20px;
   justify-content: center;

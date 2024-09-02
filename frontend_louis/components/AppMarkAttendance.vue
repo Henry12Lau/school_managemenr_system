@@ -80,7 +80,7 @@ export default {
         // console.log(mySelf.attendances);
       }, (error) => {
         // console.log(error);
-      });
+      }, this);
       this.loading = false;
     },
     async updateAttendance() {
@@ -95,7 +95,7 @@ export default {
         mySelf.closeDialog();
       }, (error) => {
         // console.log(error);
-      });
+      }, this);
       this.loading = false;
     },
   },
