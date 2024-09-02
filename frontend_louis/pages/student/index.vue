@@ -1,11 +1,11 @@
-<!-- <script>
+<script>
 export default {
   mounted() {
     this.$router.push('/student/calendar');
   },
 };
-</script> -->
-<template>
+</script>
+<!-- <template>
   <v-layout>
     <v-navigation-drawer v-model="drawer">
       <v-list density="compact" item-props :items="items" nav>
@@ -93,4 +93,4 @@ const items = ref([
 function navigateTo(view) {
   currentView.value = view
 }
-</script>
+</script> -->
