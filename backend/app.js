@@ -49,9 +49,12 @@ function isLoggedIn(requiredPermissions = [])
     if (!req.session.user) {
       return res.status(500).json({ message: 'Missing Login session' });
     }
-    if (requiredPermissions.some(permission => !req.session.user.permissions.includes(permission))) {
+    if (requiredPermissions.some(permission => req.session.user.permission == permission)) {
       return res.status(403).json({ message: 'Access Denied' });
     }
+    // if (requiredPermissions.some(permission => !req.session.user.permissions.includes(permission))) {
+    //   return res.status(403).json({ message: 'Access Denied' });
+    // }
     return next();
   }
 }

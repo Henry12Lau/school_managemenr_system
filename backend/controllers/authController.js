@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
 
       if (studentResult.rows.length > 0) {
         user = studentResult.rows[0];
-        permission = ["student"];
+        permission = "student";
       } else {
         return res
           .status(401)
@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
         );
 
         if (titleResult.rows.length > 0) {
-          permission = titleResult.rows.map((row) => row.title_name);
+          permission = titleResult.rows[0].title_name;
         } else {
           return res.status(404).json({ message: "Invalid permission" });
         }
