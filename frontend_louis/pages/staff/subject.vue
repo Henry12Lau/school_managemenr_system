@@ -109,7 +109,7 @@ export default {
                     //response.classes
                 }, (error) => {
                     // console.log(error);
-                });
+                }, this);
             });
             mySelf.subjects = subjects;
             this.loading = false;
