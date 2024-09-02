@@ -11,5 +11,6 @@ router.post('/updateAttendances', attendanceController.updateAttendances);
 router.post('/resetPassword', staffController.resetPassword);
 router.get('/getCourseMapping', staffController.getCourseMapping);
 router.get('/getCourseSubject', staffController.getCourseSubject);
+router.get('/courseMapping', staffController.courseMapping);
 
-module.exports = router;
+module.exports = router;    // Export the router object

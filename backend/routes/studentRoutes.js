@@ -8,6 +8,6 @@ router.post('/', studentController.get);
 router.post('/schedule', subjectClassController.getByStudent);
 router.post('/resetPassword', studentController.resetPassword);
 router.get('/studentList', studentController.getStudentList);
-router.get('/editStudent', studentController.editStudent);
+router.post('/editStudent', studentController.editStudent);
 
 module.exports = router;

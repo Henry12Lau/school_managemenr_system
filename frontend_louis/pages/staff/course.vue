@@ -25,10 +25,9 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-select v-model="selectedCourse" :items="courseOptions" item-text="course_name" item-value="course_code"
+            <v-select v-model="selectedCourse" :items="course" item-text="course_name" item-value="course_code"
               label="Select Course"></v-select>
-            <v-select v-model="selectedSubject" :items="subjectOptions" item-text="subject_name" item-value="subject_no"
-              label="Select Subject" :disabled="!selectedCourse"></v-select>
+            <v-combobox v-model="selectedSubjects" :items="subject" label="Select the subject" multiple></v-combobox>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -47,10 +46,12 @@ export default {
     return {
       groupedCourses: {},
       dialog: false,
-      selectedCourse: null,
-      selectedSubject: null,
+      course: null,
+      subject: null,
       courseOptions: [],
-      subjectOptions: []
+      subjectOptions: [],
+      selectedCourse: [],
+      selectedSubjects: [] // New data property to store selected subjects
     };
   },
   mounted() {
@@ -72,10 +73,6 @@ export default {
         const response = await fetch(`${this.$config.public.apiBaseUrl}/staff/getCourseMapping`);
         const data = await response.json();
         this.groupedCourses = this.groupByCourse(data.course);
-        this.courseOptions = Object.values(this.groupedCourses).map(subjects => ({
-          course_code: subjects[0].course_code,
-          course_name: subjects[0].course_name
-        }));
         console.log('Grouped Courses:', this.groupedCourses);
       } catch (error) {
         console.error(error);
@@ -87,16 +84,48 @@ export default {
         const data = await response.json();
         console.log('Courses and Subjects:', data);
         let courseArr = []
-        for (let i = 0; i < data[0].course.length; i++) {
-          courseArr.push({
-            course_name: data.course[i].course_name
-          });
+        let subjectArr = []
+        for (let i = 0; i < data.courses.length; i++) {
+          courseArr.push(data.courses[i].course_name);
         }
-        this.selectedCourse = courseArr
-        console.log(courseArr)
+        for (let i = 0; i < data.subjects.length; i++) {
+          subjectArr.push(data.subjects[i].subject_name);
+        }
+        this.course = courseArr;
+        this.subject = subjectArr; 
       } catch (error) {
         console.error(error);
       }
+    },
+    async saveSelection() {
+      console.log('Selected Course:', this.selectedCourse);
+      console.log('Selected Subjects:', this.selectedSubjects); // Log the selected subjects
+      // Add logic to store the selected subjects
+      // const payload = {
+      //   course: this.selectedCourse.course_name,
+      //   subjects: this.selectedSubjects.subject_name
+      // };
+      // try {
+      //   const response = await fetch(`${this.$config.public.apiBaseUrl}/staff/courseMapping`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(payload)
+      //   });
+
+      //   if (!response.ok) {
+      //     throw new Error('Network response was not ok');
+      //   }
+
+      //   const result = await response.json();
+      //   console.log('Save result:', result);
+      //   // Handle success (e.g., show a success message, update UI, etc.)
+      // } catch (error) {
+      //   console.error('Error saving course and subject mapping:', error);
+      //   // Handle error (e.g., show an error message)
+      // }
+      this.dialog = false;
     },
     groupByCourse(courses) {
       return courses.reduce((acc, course) => {
@@ -107,11 +136,6 @@ export default {
         return acc;
       }, {});
     },
-    saveSelection() {
-      console.log('Selected Course:', this.selectedCourse);
-      console.log('Selected Subject:', this.selectedSubject);
-      this.dialog = false;
-    }
   },
 }
 </script>

@@ -79,3 +79,27 @@ exports.getCourseSubject = async (req, res) => {
         res.status(500).json({ message: 'Error' });
     }
 };
+
+exports.courseMapping = async (req, res) => {
+    try {
+        const { course, subjects } = req.body;
+        const c_id = await client.query(`SELECT id FROM course WHERE course_name = $1`, [course]);
+        if (c_id) {
+            await client.query(`DELETE course_subject WHERE course_id = ${c_id}`);
+            for (let i = 0; i < subjects.length; i++) {
+                const s_id = await client.query(`SELECT id FROM subject WHERE subject_name = $1`, [subjects[i]]);
+                await client.query(`INSERT INTO course_subject (course_id, subject_id, create_date, create_id, update_date, update_id, is_deleted) VALUES ($1, $2, NOW(), 1, NOW(), 1, 'false')`, [c_id, s_id]);
+            }  
+        }
+        else {
+            for (let i = 0; i < subjects.length; i++) {
+                const s_id = await client.query(`SELECT id FROM subject WHERE subject_name = $1`, [subjects[i]]);
+                await client.query(`INSERT INTO course_subject (course_id, subject_id, create_date, create_id, update_date, update_id, is_deleted) VALUES ($1, $2, NOW(), 1, NOW(), 1, 'false')`, [c_id, s_id]);
+            }
+        }
+        return res.json({ message: 'Success' }); 
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error' });
+    }
+};
