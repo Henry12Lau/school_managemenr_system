@@ -75,40 +75,31 @@ export default {
           console.log('Grouped Courses:', mySelf.groupedCourses);
         }, (error) => {
           console.error(error);
-        });
+        }, this);
       } catch (error) {
         console.error(error);
       }
     },
     async getCourseSubject() {
-      try {
-        var mySelf = this;
-        const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseSubject`, {}, (response) => {
-          // const data = await response.json();
-          // console.log('Courses and Subjects:', data);
-          mySelf.courseOptions = response.courses;
-          mySelf.selectedCourse = response.courses[0].course_code
-          console.log(mySelf.courseOptions)
-          // mySelf.subjectOptions = response.subjects;
-          // let courseArr = []
-          // for (let i = 0; i < data[0].course.length; i++) {
-          // for (let i = 0; i < response[0].course.length; i++) {
-          //   courseArr.push({
-          //     // course_name: data.course[i].course_name
-          //     course_name: response.course[i].course_name
-          //   });
-          // }
-          // mySelf.selectedCourse = courseArr
-          // console.log(courseArr)
-        }, (error) => {
-          console.error(error);
-
-
-        });
-
-      } catch (error) {
+      var mySelf = this;
+      const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/getCourseSubject`, {}, (response) => {
+        // const data = await response.json();
+        // console.log('Courses and Subjects:', data);
+        mySelf.courseOptions = response.courses;
+        mySelf.subjectOptions = response.subjects;
+        // let courseArr = []
+        // for (let i = 0; i < data[0].course.length; i++) {
+        // for (let i = 0; i < response[0].course.length; i++) {
+        //   courseArr.push({
+        //     // course_name: data.course[i].course_name
+        //     course_name: response.course[i].course_name
+        //   });
+        // }
+        // mySelf.selectedCourse = courseArr
+        // console.log(courseArr)
+      }, (error) => {
         console.error(error);
-      }
+      }, this);
     },
     groupByCourse(courses) {
       return courses.reduce((acc, course) => {

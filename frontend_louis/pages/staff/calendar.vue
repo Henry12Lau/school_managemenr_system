@@ -55,10 +55,10 @@ export default {
                     // console.log(mySelf.events)
                 }, (error) => {
                     // console.log(error);
-                });
+                }, this);
             }, (error) => {
                 // console.log(error);
-            });
+            }, this);
             this.loading = false;
         },
         handleEventClick(lessonId) {

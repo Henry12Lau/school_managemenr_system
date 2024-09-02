@@ -18,7 +18,7 @@ exports.login = async (req, res) => {
         permission = "student";
       } else {
         return res
-          .status(401)
+          .status(500)
           .json({ message: "Invalid username or password" });
       }
     } else {
@@ -42,17 +42,17 @@ exports.login = async (req, res) => {
         if (titleResult.rows.length > 0) {
           permission = titleResult.rows[0].title_name;
         } else {
-          return res.status(404).json({ message: "Invalid permission" });
+          return res.status(500).json({ message: "Invalid permission" });
         }
       } else {
         return res
-          .status(401)
+          .status(500)
           .json({ message: "Invalid username or password" });
       }
     }
     const isMatch = comparePassword(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(500).json({ message: "Invalid username or password" });
     }
     const loginUser = {
       id: user.id,
@@ -72,7 +72,7 @@ exports.session = async (req, res) => {
     const loginUser = req.session.user
     return res.json({ id: loginUser.id, permission: loginUser.permission });
   } else {
-    res.status(404).json({ error: "No session data found" });
+    res.status(401).json({ error: "No session data found" });
   }
 };
 exports.logout = async (req, res) => {

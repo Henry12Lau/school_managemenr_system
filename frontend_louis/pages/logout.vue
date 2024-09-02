@@ -5,7 +5,7 @@ export default {
         }, (response) => {
         }, (error) => {
             // console.log(error);
-        });
+        }, this);
         this.$router.push('/login');
     },
 };

@@ -105,7 +105,7 @@ export default {
             // detail: 'Detail',
             edit: 'Edit'
           })
-        });
+        }, this);
         mySelf.list = students;
         this.loadItems({ page: 1, itemsPerPage: mySelf.itemsPerPage, sortBy: [] });
       }, (error) => {
@@ -183,9 +183,7 @@ export default {
           mySelf.fetchStudentData();
         }, (error) => {
           console.log('Failed to update student information');
-        }
-      );
-
+        }, this);
     },
   },
 };

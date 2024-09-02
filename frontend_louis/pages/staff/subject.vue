@@ -91,10 +91,10 @@ export default {
                     //response.classes
                 }, (error) => {
                     // console.log(error);
-                });
+                }, this);
             }, (error) => {
                 // console.log(error);
-            });
+            }, this);
             this.loading = false;
         },
         async fetchSubjectsStudents(subjects) {
