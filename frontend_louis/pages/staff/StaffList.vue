@@ -7,6 +7,9 @@
           <v-text-field v-model="name" class="ma-2" density="compact" placeholder="Search..." hide-details
             style="width: 300px;"></v-text-field>
         </td>
+        <td class="w-100">
+          <v-btn class="float-right" color="primary" @click="handleCreateButtonClick">Add</v-btn>
+        </td>
       </tr>
     </template>
     <template v-slot:item.status="{ item }">
@@ -29,6 +32,8 @@
       </v-card-title>
       <v-card-text>
         <!-- Add your form or content here -->
+        <v-select v-model="selectedItem.titleId" :items="titleList" item-title="title_name" item-value="id"
+        label="Title"></v-select>
         <v-text-field v-model="selectedItem.staffNum" label="Staff No." readonly></v-text-field>
         <v-text-field v-model="selectedItem.surname" label="Surname"></v-text-field>
         <v-text-field v-model="selectedItem.givenName" label="Given Name"></v-text-field>
@@ -42,6 +47,32 @@
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
         <v-btn color="blue darken-1" text @click="saveItem">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="createDialog" max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">New</span>
+      </v-card-title>
+      <v-card-text>
+        <!-- Add your form or content here -->
+        <v-select v-model="newStaff.title_id" :items="titleList" item-title="title_name" item-value="id"
+        label="Title"></v-select>
+        <v-text-field v-model="newStaff.staff_no" label="Staff No."></v-text-field>
+        <v-text-field v-model="newStaff.surname" label="Surname"></v-text-field>
+        <v-text-field v-model="newStaff.given_name" label="Given Name"></v-text-field>
+        <v-text-field v-model="newStaff.sex" label="Sex"></v-text-field>
+        <v-text-field v-model="newStaff.tel" label="Phone"></v-text-field>
+        <v-text-field v-model="newStaff.username" label="Login ID"></v-text-field>
+        <v-text-field v-model="newStaff.password" label="Password"></v-text-field>
+        <!-- Add more fields as needed -->
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="createDialog = false">Cancel</v-btn>
+        <v-btn color="blue darken-1" text @click="createStaff">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -70,6 +101,9 @@ export default {
     dialog: false,
     selectedItem: {},
     list: [],
+    titleList: [],
+    createDialog: false,
+    newStaff: {},
   }),
   computed: {
     statusString: {
@@ -88,15 +122,17 @@ export default {
   },
   mounted() {
     this.fetchStaffData();
+    this.fetchTitleData();
   },
   methods: {
     async fetchStaffData() {
       var mySelf = this;
-      await CallApi(`${this.$config.public.apiBaseUrl}/manage/staffs`, {}, (response) => {
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/staff/list`, {}, (response) => {
         mySelf.list = [];
         var staffs = [];
         response.staffs.forEach((item) => {
           staffs.push({
+            titleId: item.title_id,
             staffId: item.id,
             staffNum: item.staff_no,
             surname: item.surname,
@@ -149,13 +185,14 @@ export default {
     },
     handleButtonClick(item) {
       this.selectedItem = { ...item };
-      // console.log('Selected Item:', this.selectedItem);
+      console.log('Selected Item:', this.selectedItem);
       this.dialog = true;
     },
     async saveItem() {
       var mySelf = this;
       // console.log('Saving Item:', this.selectedItem);
       const payload = {
+        title_id: this.selectedItem.titleId,
         surname: this.selectedItem.surname,
         given_name: this.selectedItem.givenName,
         tel: this.selectedItem.tel,
@@ -166,13 +203,44 @@ export default {
         // status: this.selectedItem.status ? 'true' : 'false',
       };
 
-      const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/editStaff`,
+      const response = await CallApi(`${this.$config.public.apiBaseUrl}/manage/staff/edit`,
         payload, (response) => {
           mySelf.fetchStaffData();
           mySelf.dialog = false;
         }, (error) => {
           // console.log('Failed to update staff information');
         }, this);
+    },
+    async fetchTitleData() {
+      var mySelf = this;
+      mySelf.titleList = [];
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/staff/title`, {}, (response) => {
+        mySelf.titleList = response.titles;
+      }, (error) => {
+        // console.log('Error fetching staff data:', error);
+      });
+    },
+    handleCreateButtonClick() {
+      this.createDialog = true;
+    },
+    async createStaff() {
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/staff/create`, {
+        title_id: this.newStaff.title_id,
+        staff_no: this.newStaff.staff_no,
+        surname: this.newStaff.surname,
+        given_name: this.newStaff.given_name,
+        sex: this.newStaff.sex,
+        tel: this.newStaff.tel,
+        username: this.newStaff.username,
+        password: this.newStaff.password,
+        
+      }, (response) => {
+        this.fetchStaffData();
+        this.createDialog = false;
+        this.newStaff = {};
+      }, (error) => {
+        // console.log('Error fetching staff data:', error);
+      });
     },
   },
 };

@@ -4,6 +4,7 @@ const courseController = require('../controllers/courseController');
 const subjectController = require('../controllers/subjectController');
 
 router.post('/', courseController.get);
+router.post('/list', courseController.getAll);
 router.post('/subjects', subjectController.getByCourse);
 
 module.exports = router;

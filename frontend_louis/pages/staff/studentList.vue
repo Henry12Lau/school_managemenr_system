@@ -7,6 +7,9 @@
           <v-text-field v-model="name" class="ma-2" density="compact" placeholder="Search..." hide-details
             style="width: 300px;"></v-text-field>
         </td>
+        <td class="w-100">
+          <v-btn class="float-right" color="primary" @click="handleCreateButtonClick">Add</v-btn>
+        </td>
       </tr>
     </template>
     <template v-slot:item.status="{ item }">
@@ -29,6 +32,8 @@
       </v-card-title>
       <v-card-text>
         <!-- Add your form or content here -->
+        <v-select v-model="selectedItem.courseId" :items="courseList" item-title="course_name" item-value="course_id"
+          label="Course" readonly></v-select>
         <v-text-field v-model="selectedItem.studentNum" label="Student No." readonly></v-text-field>
         <v-text-field v-model="selectedItem.surname" label="Surname"></v-text-field>
         <v-text-field v-model="selectedItem.givenName" label="Given Name"></v-text-field>
@@ -42,6 +47,32 @@
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
         <v-btn color="blue darken-1" text @click="saveItem">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="createDialog" max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">New</span>
+      </v-card-title>
+      <v-card-text>
+        <!-- Add your form or content here -->
+        <v-select v-model="newStudent.course_id" :items="courseList" item-title="course_name" item-value="course_id"
+          label="Course"></v-select>
+        <v-text-field v-model="newStudent.student_no" label="Staff No."></v-text-field>
+        <v-text-field v-model="newStudent.surname" label="Surname"></v-text-field>
+        <v-text-field v-model="newStudent.given_name" label="Given Name"></v-text-field>
+        <v-text-field v-model="newStudent.sex" label="Sex"></v-text-field>
+        <v-text-field v-model="newStudent.tel" label="Phone"></v-text-field>
+        <v-text-field v-model="newStudent.username" label="Login ID"></v-text-field>
+        <v-text-field v-model="newStudent.password" label="Password"></v-text-field>
+        <!-- Add more fields as needed -->
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="createDialog = false">Cancel</v-btn>
+        <v-btn color="blue darken-1" text @click="createStudent">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -69,6 +100,9 @@ export default {
     dialog: false,
     selectedItem: {},
     list: [],
+    courseList: [],
+    createDialog: false,
+    newStudent: {},
   }),
   computed: {
     statusString: {
@@ -87,15 +121,17 @@ export default {
   },
   mounted() {
     this.fetchStudentData();
+    this.fetchCourseData();
   },
   methods: {
     async fetchStudentData() {
       var mySelf = this;
-      await CallApi(`${this.$config.public.apiBaseUrl}/manage/students`, {}, (response) => {
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/student/list`, {}, (response) => {
         mySelf.list = [];
         var students = [];
         response.students.forEach((item) => {
           students.push({
+            courseId: item.course_id,
             studentId: item.id,
             studentNum: item.student_no,
             surname: item.surname,
@@ -110,7 +146,7 @@ export default {
         mySelf.list = students;
         this.loadItems({ page: 1, itemsPerPage: mySelf.itemsPerPage, sortBy: [] });
       }, (error) => {
-        console.error('Error fetching student data:', error);
+        // console.log('Error fetching student data:', error);
       });
     },
     loadItems({ page, itemsPerPage, sortBy }) {
@@ -146,12 +182,11 @@ export default {
     },
     handleButtonClick(item) {
       this.selectedItem = { ...item };
-      console.log('Selected Item:', this.selectedItem);
       this.dialog = true;
     },
     async saveItem() {
       var mySelf = this;
-      console.log('Saving Item:', this.selectedItem);
+      // console.log('Saving Item:', this.selectedItem);
       const payload = {
         surname: this.selectedItem.surname,
         given_name: this.selectedItem.givenName,
@@ -162,13 +197,51 @@ export default {
         // status: this.selectedItem.status ? 'true' : 'false',
       };
 
-      await CallApi(`${this.$config.public.apiBaseUrl}/manage/editStudent`,
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/student/edit`,
         payload, (response) => {
           mySelf.fetchStudentData();
           mySelf.dialog = false;
         }, (error) => {
-          console.log('Failed to update student information');
+          // console.log('Failed to update student information');
         }, this);
+    },
+    async fetchCourseData() {
+      var mySelf = this;
+      mySelf.courseList = [];
+      var courses = [];
+      await CallApi(`${this.$config.public.apiBaseUrl}/course/list`, {}, (response) => {
+        response.courses.forEach(course => {
+          courses.push({
+            course_id: course.id,
+            course_name: '(' + course.category + ') ' + course.course_code + ' - ' + course.course_name
+          })
+        })
+        mySelf.courseList = courses;
+      }, (error) => {
+        // console.log('Error fetching staff data:', error);
+      });
+    },
+    handleCreateButtonClick() {
+      this.createDialog = true;
+    },
+    async createStudent() {
+      // console.log(this.newStudent);
+      await CallApi(`${this.$config.public.apiBaseUrl}/manage/student/create`, {
+        student_no: this.newStudent.student_no,
+        course_id: this.newStudent.course_id,
+        surname: this.newStudent.surname,
+        given_name: this.newStudent.given_name,
+        sex: this.newStudent.sex,
+        tel: this.newStudent.tel,
+        username: this.newStudent.username,
+        password: this.newStudent.password
+      }, (response) => {
+        this.fetchStudentData();
+        this.createDialog = false;
+        this.newStudent = {};
+      }, (error) => {
+        // console.log('Error fetching staff data:', error);
+      });
     },
   },
 };

@@ -6,11 +6,14 @@ const courseController = require('../controllers/courseController');
 const subjectController = require('../controllers/subjectController');
 const subjectClassController = require('../controllers/subjectClassController');
 
-router.post('/students', studentController.getAll);
-router.post('/editStudent', studentController.editStudent);
+router.post('/student/list', studentController.getAll);
+router.post('/student/edit', studentController.edit);
+router.post('/student/create', studentController.create);
 // router.post('/students/resetPassword', studentController.resetPassword);
-router.post('/staffs', staffController.getAll);
-router.post('/editStaff', staffController.editStaff);
+router.post('/staff/list', staffController.getAll);
+router.post('/staff/title', staffController.getTitle);
+router.post('/staff/edit', staffController.edit);
+router.post('/staff/create', staffController.create);
 // router.post('/staffs/resetPassword', staffController.resetPassword);
 
 router.post('/getCourseSubject', courseController.getCourseSubject);

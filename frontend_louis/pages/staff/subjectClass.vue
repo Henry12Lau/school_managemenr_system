@@ -201,7 +201,7 @@ export default {
     methods: {
         async fetchTeacherData() {
             var mySelf = this;
-            await CallApi(`${this.$config.public.apiBaseUrl}/manage/staffs`, {}, (response) => {
+            await CallApi(`${this.$config.public.apiBaseUrl}/manage/staff/list`, {}, (response) => {
                 mySelf.teacherList = response.staffs
             }, (error) => {
                 // console.log('Error fetching staff data:', error);
@@ -209,7 +209,7 @@ export default {
         },
         async fetchStudentsData() {
             var mySelf = this;
-            await CallApi(`${this.$config.public.apiBaseUrl}/manage/students`, {
+            await CallApi(`${this.$config.public.apiBaseUrl}/manage/student/list`, {
             }, (response) => {
                 mySelf.studentList = response.students;
             }, (error) => {

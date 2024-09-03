@@ -33,6 +33,19 @@ exports.getAll = async (req, res) => {
     res.status(500).json({ message: "Error" });
   }
 };
+exports.getTitle = async (req, res) => {
+  try {
+    const { rows } = await client.query(
+      `SELECT id, title_name
+        FROM title 
+        WHERE is_deleted = FALSE`
+    );
+    return res.json({ titles: rows, message: "Success" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error" });
+  }
+};
 exports.resetPassword = async (req, res) => {
   try {
     const { id, password } = req.body;
@@ -47,9 +60,29 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Error" });
   }
 };
-exports.editStaff = async (req, res) => {
+exports.create = async (req, res) => {
+  try {
+    const { staff_no, surname, given_name, sex, tel, username, password, onboard_date, title_id } = req.body;
+    const hashedPassword = await hashPassword(password);
+    const { rows } = await client.query(
+      `INSERT INTO staff (staff_no, surname, given_name, sex, tel, username, password, onboard_date) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+      RETURNING id;`,
+      [staff_no, surname, given_name, sex, tel, username, hashedPassword]
+    );
+    const staff_id = rows[0].id;
+    await client.query(
+      `INSERT INTO staff_title (staff_id, title_id) VALUES ($1, $2)`,
+      [staff_id, title_id]
+    );
+    return res.json({ message: "Success" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error" });
+  }
+};
+exports.edit = async (req, res) => {
     try {
-        const { id, surname, given_name, tel, password, staff_no, is_deleted } = req.body;
+        const { id, surname, given_name, tel, password, staff_no, title_id, is_deleted } = req.body;
         if (password !== '') {
             const hashedPassword = await hashPassword(password);
             await client.query(
@@ -62,6 +95,10 @@ exports.editStaff = async (req, res) => {
                 [surname, given_name, tel, id]
             );
         }
+        await client.query(
+          `UPDATE staff_title SET title_id = $1, update_date = NOW() WHERE staff_id = $2`,
+          [title_id, id]
+        )
 
         return res.json({ message: 'Success' });
     } catch (err) {
