@@ -5,7 +5,7 @@ exports.get = async (req, res) => {
     try {
         const { id } = req.body;
         const { rows } = await client.query(
-            'SELECT id, student_no, course_id, surname, given_name, sex, tel, username FROM student WHERE id = $1 AND is_deleted = FALSE',
+            `SELECT id, student_no, course_id, surname, given_name, sex, tel, username,  surname || ' ' || given_name || ' (' || student_no || ')' AS full_name, id AS student_id FROM student WHERE id = $1 AND is_deleted = FALSE`,
             [id]
         );
         return res.json({ student: rows[0], message: 'Success' });
@@ -17,7 +17,7 @@ exports.get = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         const { rows } = await client.query(
-            'SELECT id, student_no, surname, given_name, tel, username, is_deleted FROM student WHERE is_deleted = FALSE ORDER BY surname, given_name'
+            `SELECT id, student_no, surname, given_name, tel, username, is_deleted,  surname || ' ' || given_name || ' (' || student_no || ')' AS full_name, id AS student_id FROM student WHERE is_deleted = FALSE ORDER BY surname, given_name`
         );
         return res.json({ students: rows, message: 'Success' });
     } catch (err) {
@@ -43,7 +43,8 @@ exports.getBySubjectClass = async (req, res) => {
         const { id } = req.body;
         const { rows } = await client.query(
             `
-            SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel
+            SELECT scs.subject_class_id, sc.subject_id, scs.student_id, s.subject_no, s.subject_name, st.student_no, st.surname, st.given_name, st.sex, st.tel,
+            st.surname || ' ' || st.given_name || ' (' || st.student_no || ')' AS full_name
             FROM subject_class sc
             LEFT JOIN subject s ON s.id = sc.subject_id AND s.is_deleted = FALSE
             LEFT JOIN subject_class_student scs ON scs.subject_class_id = sc.id AND scs.is_deleted = FALSE

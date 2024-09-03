@@ -96,6 +96,11 @@ export default {
                     prependIcon: 'mdi-briefcase-outline',
                     link: true,
                     to: '/staff/course'
+                }, {
+                    title: 'Subject Class',
+                    prependIcon: 'mdi-briefcase-outline',
+                    link: true,
+                    to: '/staff/subjectClass'
                 },]
             };
         }

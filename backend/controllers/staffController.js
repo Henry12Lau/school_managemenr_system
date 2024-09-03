@@ -5,7 +5,7 @@ exports.get = async (req, res) => {
   try {
     const { id } = req.body;
     const { rows } = await client.query(
-      `SELECT s.id, s.staff_no, s.surname, s.given_name, s.sex, s.tel, s.username, t.title_name, st.title_id
+      `SELECT s.id, s.staff_no, s.surname, s.given_name, s.sex, s.tel, s.username, t.title_name, st.title_id, s.surname || ' ' || s.given_name || ' (' || s.staff_no || ')' AS full_name
         FROM staff s
         LEFT JOIN staff_title st ON st.staff_id = s.id AND st.is_deleted = FALSE
         LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = FALSE
@@ -21,7 +21,7 @@ exports.get = async (req, res) => {
 exports.getAll = async (req, res) => {
   try {
     const { rows } = await client.query(
-      `SELECT s.id, s.staff_no, s.surname, s.given_name, s.sex, s.tel, s.username, t.title_name, st.title_id
+      `SELECT s.id, s.staff_no, s.surname, s.given_name, s.sex, s.tel, s.username, t.title_name, st.title_id, s.surname || ' ' || s.given_name || ' (' || s.staff_no || ')' AS full_name
         FROM staff s
         LEFT JOIN staff_title st ON st.staff_id = s.id AND st.is_deleted = FALSE
         LEFT JOIN title t ON t.id = st.title_id AND t.is_deleted = FALSE
