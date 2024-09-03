@@ -1,69 +1,83 @@
-member
-----
-id int
-memberID varchar(10) pk
-memberType int
-name varchar(100)
-contact varchar(20)
-email varchar(100)
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
-
-login
-----
-id int
-type varchar(10)
-loginID varchar(10) fk - member.memberID
-password varchar(50)
-isActive boolean
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
-
 attendance
 ----
-id int
-subjectID varchar(10) fk - subject.subjectID
-studentID varchar(20) fk - member.memberID
-name varchar(100)
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
+id int pk
+subject_class_schedule_id int
+student_id int
 
 course
 ----
-id int
-courseID pk
-courseName varchar(100)
-QF int
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
+id int pk
+course_code varchar(10)
+course_name varchar(50)
+duration varchar(50)
+category varchar(50)
 
+course_subject
+----
+id int pk
+course_id int fk - course.id
+subject_id int fk - subject.id
+
+staff
+----
+id int pk
+staff_no varchar(100)
+surname varchar(100)
+given_name varchar(100)
+sex varchar(100)
+tel varchar(20)
+onboard_date datetime
+last_date datetime
+username varchar(100)
+password varchar(100)
+
+staff_title
+----
+id int pk
+staff_id int fk - staff.id
+title_id int fk - title.id
+
+student
+----
+id int pk
+student_no varchar(100)
+course_id varchar(100)
+surname varchar(100)
+given_name varchar(100)
+sex varchar(100)
+tel varchar(20)
+username varchar(100)
+password varchar(100)
 
 subject
 ----
 id int
-subjectID pk
-courseID fk - course.courseID
-subjectName
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
+subject_no varchar(100)
+subject_name varchar(100)
+number_of_lesson int
+lesson_duration int
 
-mapping
+subject_class
 ----
-id int
-courseID varchar(10) fk - course.courseID
-subjectID varchar(10) fk - subject.subjectID
-year varchar(6)
-created_at datetime
-created_by varchar(20)
-updated_at datetime
-updated_by varchar(20)
+id int pk
+subject_id int fk - subject.id
+staff_id int fk staff.id
+start_date datetime
+
+subject_class_schedule
+----
+id int pk
+subject_class_id int fk - subject_class.id
+lesson_start datetime
+lesson_end datetime
+
+subject_class_student
+----
+id int pk
+subject_class_id int fk - subject_class.id
+student_id int fk - student.id
+
+title
+----
+id int pk
+title_name varchar(100)
